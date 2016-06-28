@@ -1,0 +1,128 @@
+2016/4/20
+1.preparedStatement可以有效防止sql恶意注入.因为其采用占位符的形式
+而Statement不可以
+2.使用jdbc驱动程序处理元数据
+Connection对象可以获取有关数据库管理系统的各种信息
+获取这些信息的方法均在DatabaseMetaData类的对象上实现
+DatabaseMetaData对象在Connection对象上获得
+3.ResultSetMetaData
+描述ResultSet的元数据对象.即从中可以获取到结果集中有多少列.列名.别名
+4.ResultSet的rs.getMetaData();获取ResultSetMetaData对象
+5.ResultSetMetaData中的方法
+(1)int getColumnCount():sql语句中包含哪些列
+(2)String getColumnLabel(int column):获取列名.索引从1开始
+
+6.beanutils:操作javaBean的工具包
+导入:commons-beanutils.jar和commons-logging.jar
+(1)setProperty()
+BeanUtils.setProperty(object,"idCard","1111");
+
+(2)getProperty()
+Object val=BeanUtils.getProperty(object,"idCard");
+
+7.获取表中自动生成的主键值
+preparedStatement psmt=conn.prepareStatement(sql,Statment.RETURN_GENERATED_KEYS);
+psmt.executeUpdate();
+ResultSet rs=psmt.getGeneratedKeys();
+if(rs.next()){
+	System.out.println(rs.getObject(1));
+}
+
+5.MySQL blob类型 大数据
+blob是一个二进制大型对象
+TinyBlob 最大255
+Blob 最大65k
+mediumBlob 
+
+6.数据库的隔离级别
+读已提交
+
+7.数据库连接池
+jdbc数据库连接池使用javax.sql.DataSource接口表示.
+常用的数据库连接池
+(1)DBCP数据库连接池
+(2)c3p0数据库连接池
+DataSource称为数据源.包含连接池和连接池管理.(连接池)
+(1)DBCP数据源是Apache的连接池实现
+--Commons-dbcp.jar:连接池的实现
+--Commons-pool.jar:连接池实现的依赖库
+8.DBCP具体步骤
+(1)META-INF下放Context.xml
+配置文件 
+<Context>
+	<Resource  
+		name="jdbc/mysql"  
+		auth="Container" 
+		type="javax.sql.DataSource"
+		maxActive="20" 
+		maxIdle="10" 
+		maxWait="5000" 
+		username="test" 
+		password="test"
+		driverClassName="com.mysql.jdbc.Driver" 
+		url="jdbc:mysql://localhost:3306/testweb" />
+</Context>
+
+(2)WEB-INF下lib下
+放入commons-dbutils.jar和mysql-connector-java.jar
+
+(3)
+package com.web.util;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.sql.DataSource;
+
+public class DataSourceHelper {
+	//私有化构造器.在外部只能通过类名.静态方法访问
+	private DataSourceHelper(){}
+    //通过JNDI获得DataSource
+	public static DataSource getSource() throws Exception{
+		//初始化上下文
+	    Context context = new InitialContext();
+	    //查找上下文环境中查找java组件(comp).
+	    Context ctx = (Context)context.lookup("java:comp/env");
+	    DataSource ds = (DataSource)ctx.lookup("jdbc/mysql");
+		return ds;
+   }
+}
+
+
+(4)com.web.dao下的dao接口
+(5)com.web.dao.impl下的dao实现类
+public List<Map<String,Object>> pmTotal() throws Exception{ 
+		String sql = "";
+		//通过查找数据源.构造一个QueryRunner的对象.执行语句查询的对象
+		QueryRunner runner = new QueryRunner(DataSourceHelper.getSource());
+		//query(sql,ResultSetHandler<T>) ResultSetHandler<T>将结果集转换成MapListHandler(多个Map的集合 a list of maps)等结构
+		//将查询结果转换为你想要的结构如MapListHandler结构
+		return runner.query(sql, new MapListHandler()); 
+	}
+
+2016/4/23
+1. new MapListHandler()是一个List<Map<String,Object>>的结构
+查询出来的结果是每一行作为一个Map.{name=zzx, pass=111}
+然后把多行Map信息放入List中.
+遍历时
+
+<%
+	
+	List<Map<String,Object>> jieGuoJi=(List<Map<String,Object>>)request.getAttribute("jieGuo");
+	//先对外面的List遍历.取出每一行的Map
+	for(int i=0;i<jieGuoJi.size();i++)
+	{
+		//取出Map.后面的get(i) i是索引.即List中的第几个元素
+		Map<String,Object> map=jieGuoJi.get(i);
+		
+		out.print(map.get("name"));
+		out.print(map.get("pass"));
+		out.print("<br/>");
+	}
+	%>
+
+用jstl遍历这个ListMap
+	<c:forEach items="${requestScope.jieGuo}" var="hehe">
+		<c:forEach items="${hehe}" var="mapin">
+			${mapin.key}--${mapin.value}<br/>
+		</c:forEach>
+	</c:forEach>

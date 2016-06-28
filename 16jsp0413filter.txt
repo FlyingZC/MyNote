@@ -1,0 +1,150 @@
+1.Filter
+import java.io.IOException;
+
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+
+public class HelloFilter implements Filter {
+
+	@Override
+	public void destroy() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void doFilter(ServletRequest arg0, ServletResponse 
+	arg1,
+			FilterChain arg2) throws IOException, 
+			ServletException {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void init(FilterConfig arg0) throws 
+	ServletException {
+		// TODO Auto-generated method stub
+
+	}
+
+}
+2.FilterConfig:
+FilterChain:多个Filter可以构成一个Filter链
+doFilter(ServletRequest request,ServletResponse response)
+把请求传给Filter链的下一个Filter
+
+3.在FirstFilter中
+Chain代表Filter链对象
+public void doFilter(ServletRequest req, ServletResponse 
+resp,
+			FilterChain chain) throws IOException, 
+			ServletException {
+		// TODO Auto-generated method stub
+		System.out.println("doFilter方法");
+		chain.doFilter(req, resp);
+}
+会将Filter传给下一个Filter
+
+4.Filter的执行顺序
+在web.xml中<Filter-mapping>先出现的先执行
+(1)FirstFilter
+public void doFilter()
+{
+   System.out.println("FirstFilter的doFilter之前");[1]
+   chain.doFilter(req, resp);
+	System.out.println("FirstFilter的doFilter之前");[5]
+}
+(2)SecondFilter
+public void doFilter()
+{
+   System.out.println("SecondFilter的doFilter之前");[2]
+   chain.doFilter(req, resp);
+	System.out.println("SecondFilter的doFilter之前");[4]
+}
+
+(3)login.jsp[3]
+执行顺序
+
+5.dispatcher.jsp
+里<jsp:forward page="/test.jsp"></jsp:forward>
+
+6.<dispatcher>指定过滤器所拦截的资源被Servlet容器调用的方
+式.可以是REQUEST,INCLUDE,FORWARD和ERROR之一.默认是request.
+可以设置多个<dispatcher>节点来指定Filter对资源的多种调用方
+式进行拦截.
+如果设定为request或者默认.则不会拦截RequestDispatcher的include()和forward()方式的访问
+include:资源通过RequestDispatcher()的include()方法访问会被拦截
+forward:资源通过RequestDispatcher()的forward()方法访问会被拦截
+
+在web.xml中.这样SecondFilter可以拦截forward,request,include请求
+<filter>
+    <filter-name>secondFilter</filter-name>
+    <filter-class>com.zc.javaweb.SecondFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>secondFilter</filter-name>
+    <url-pattern>/test.jsp</url-pattern>
+    <dispatcher>FORWARD</dispatcher>
+    <dispatcher>INCLUDE</dispatcher>
+    <dispatcher>REQUEST</dispatcher>
+  </filter-mapping>
+
+7.//重定向
+//response.sendRedirect("index.jsp");
+			
+//转发 地址栏不变
+request.getRequestDispatcher("index.jsp").forward(request, 
+response);
+
+<!--请求的转发-->
+<jsp:forward page="test.jsp">注意这中间不能写任何话但是可以
+添加一个param参数子节点</jsp:forward>
+本来是dispatcher.jsp地址栏不变.但是现实的是test.jsp页面
+
+
+2016/4/14
+1.Filter实现页面禁用缓存
+
+并不是所有浏览器都支持这三个.所以都写.作用相同
+response.setDateHeader("Expires",-1);
+response.setHeader("Cache-Control","no-cache");
+response.setHeader("Pragma","no-cache");
+
+2.字符编码过滤器
+(1)<context-param>
+  	<param-name>encoding</param-name>
+  	<param-value>UTF-8</param-value>
+ </context-param>
+(2)EncodingFilter中
+request.setCharacterEncoding(encoding);
+filterChain.doFilter(request, response);
+1080.960 540.960
+
+3.检查登录
+在web.xml中
+没登录时重定向的页面
+<context-param>
+   <param-name>redirectPage</param-name>
+	<param-value>/login/login.jsp</param-value>
+</context-param>
+不需要拦截的url
+<context-param>
+   <param-name>uncheckdeUrls</param-name>
+	<param-value>/login/a.jsp,/login/b.jsp</param-value>
+</context-param>
+
+LoginFilter
+从web.xml中获取uri
+request.getRequestURL().toString()
+url http://localhost:8080/MyFilter/login/a.jsp
+
+request.getServletPath()
+uri /MyFilter/login/a.jsp
+
+request.getServletPath()
+servletPath login/a.jsp

@@ -1,0 +1,217 @@
+2016/4/25
+1.comparable接口:自然排序使用
+2.comparator接口:定制排序使用
+3.Map接口与Collection接口并列存在.具有映射关系的key-value
+4.key,value可以是任何引用类型的数据
+5.Map中的key用set存放.即不能重复
+6.Map对象的对应的类.需重写hashCode(0和equals()方法
+7.常用String类作为Map的键
+8.value可以重复
+9.Map
+ |--HashTable
+	 |--Properties
+ |--HashMap
+	 |--LinkedHashMap
+ |--SortedMap
+    |--TreeMap
+
+10.key用Set存储的KeySet
+value是用Collection存放的Object类型
+一个key-value对即为一个entry
+所有entry又构成一个set
+
+11.元视图操作的方法.即遍历Map
+Set keySet()
+
+Collection values()
+
+Set entrySet()
+
+12.Set<Map.Entry<k,v>> entrySet()方法
+看到13-09
+
+
+set
+package com.zc;
+
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.TreeSet;
+
+import org.junit.Test;
+
+public class TestSet {
+	@Test
+	public void testHashSet()
+	{//Set底层存储无序	
+		Set<Object> set1=new HashSet<Object>();
+		//add(Object类型)
+		set1.add("heh");
+		//相同的元素只能放进去一个.其他的放不进去
+		//遍历出来的顺序和存放的先后顺序无关.但是每次都固定
+		set1.add("heh");
+		set1.add(1);
+		//Person这种类要重写equals()和hashCode()方法.才能保证相同的元素也
+		放不进去
+		set1.add(new Person("zz",1));
+		set1.add(new Person("zz",1));
+		System.out.println(set1.size());
+		System.out.println(set1);
+		
+		//遍历
+		Iterator iterator=set1.iterator();
+		while(iterator.hasNext()){
+			System.out.println(iterator.next());
+		}
+	}
+	
+	@Test
+	public void testLinkedHashSet()
+	{
+		//测试LinkedHashSet() 遍历按照输入的先后顺序输出
+		Set<Object> set1=new LinkedHashSet<Object>();
+		//add(Object类型)
+		set1.add("heh");
+		//相同的元素只能放进去一个.其他的放不进去
+		//遍历出来的顺序和存放的先后顺序无关.但是每次都固定
+		set1.add("heh");
+		set1.add(1);
+		//Person这种类要重写equals()和hashCode()方法.才能保证相同的元素也
+		放不进去
+		set1.add(new Person("zz",1));
+		set1.add(new Person("zz",1));
+		System.out.println(set1.size());
+		System.out.println(set1);
+		
+		//遍历
+		System.out.println("遍历");
+		Iterator iterator=set1.iterator();
+		while(iterator.hasNext()){
+			System.out.println(iterator.next());
+		}
+	}
+	
+	@Test
+	public void testTreeSet()
+	{
+		//Person类需事先Comparable接口.才能使用TreeSet
+		//TreeSet按照字母大小排序输出...	
+		//测试LinkedHashSet() 遍历按照输入的先后顺序输出
+		//TreeSet里只能放一种类型的数据.当然如果使用泛型Set<Object> 
+		set=new TreeSet() 就能放所有Object类型的了
+		Set set1=new TreeSet();
+		//add(Object类型)
+		set1.add("heh");
+		//相同的元素只能放进去一个.其他的放不进去
+		//遍历出来的顺序和存放的先后顺序无关.但是每次都固定
+		set1.add("heh");
+		set1.add(1);
+		//Person这种类要重写equals()和hashCode()方法.才能保证相同的元素也
+		放不进去
+		set1.add(new Person("zz",1));
+		set1.add(new Person("zz",1));
+		System.out.println(set1.size());
+		System.out.println(set1);
+		
+		//遍历
+		System.out.println("遍历");
+		Iterator iterator=set1.iterator();
+		while(iterator.hasNext()){
+			System.out.println(iterator.next());
+		}
+	}
+}
+
+---
+map
+package com.zc;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
+import org.junit.Test;
+
+public class TestMap {
+	@Test
+	public void testHashMap()
+	{
+		Map map1=new HashMap();
+		//put(Object,Object)
+		map1.put("heh","nimei");
+		//key不能重复.后面这个可以放进去.但是会覆盖掉之前的
+		map1.put("heh","....");
+		map1.put(2,"sf");
+		map1.put("a",1);
+		//HashMap的key或者value均可以为null
+		map1.put(null, null);
+		System.out.println(map1.size());
+		System.out.println(map1);
+		//通过key删除entry对
+		map1.remove("heh");
+		//重要.---通过key的值来获取value的值
+		map1.get("a");
+		System.out.println(map1.get("a"));
+		//
+		map1.clear();
+		System.out.println("大小"+map1.size());
+		
+		
+	}
+	
+	@Test
+	public void bianLiMap()
+	{
+		Map<String,Object> map1=new HashMap<String,Object>();
+		map1.put("heh","nisdfdnf");
+		map1.put("2","haha");
+		map1.put("3", "hehe");
+		
+		//1.遍历key集.也就是遍历一个Set
+		Set<String> set1=map1.keySet();
+		for(String i:set1)
+		{
+			System.out.println(i);
+		}
+		
+		//2.遍历value集.
+		Collection<Object> vals=map1.values();
+		System.out.println("遍历value");
+		for(Object obj:vals)
+		{
+			System.out.println(obj);
+		}
+		
+		Iterator<Object> iterator=vals.iterator();
+		while( iterator.hasNext())
+		{
+			System.out.println(iterator.next());
+		}
+		
+		//3.遍历entries
+		System.out.println("遍历entries");
+		//3.1方式一
+		//获取key
+		Set<String> set2=map1.keySet();
+		
+		for(String i:set2)
+		{
+			System.out.println(i+"->"+map1.get(i));
+		}
+		
+		//3.2方式2不熟
+		Set set3=map1.entrySet();
+		for(Object obj:set3)
+		{
+			Map.Entry entry=(Map.Entry)obj;
+			System.out.println(entry.getKey());
+		}
+		
+	}
+}
+
+

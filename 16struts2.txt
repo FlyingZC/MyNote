@@ -1,0 +1,139 @@
+struts2
+2016/5/30
+导入源码.preference->Install jars
+
+xml catalog:xml标签提示
+
+视图层
+控制层
+服务层:完成业务逻辑
+领域层:业务逻辑数据表达.pojo
+持久层:数据库操作
+
+2016/6/4
+如果是链接
+index.jsp中
+<a href="test-aware.action">测试aware</a>
+
+
+
+1.不与ServletAPI耦合的方式
+(1)ActionContext对象获取web资源
+(2)实现ApplicationAware接口获取web资源
+
+2.与ServletAPI耦合的方式
+ServletActionContext对象
+实现ServletContextAware
+
+3.配置struts能够处理的请求类型
+org.apache.struts2下
+default.properties
+里struts.action.extension=action,,
+即拓展名为.action或者无
+
+2016/6/5
+1.ActionSupport类 默认的Action类
+在sturuts-default.xml中查看
+
+<action name="login-ui">
+	<result>/login.jsp</result>
+</action>	
+默认的class为ActionSupport类
+
+struts-default.xml中<package struts-default>中
+<default-class-ref class="com.opensymphony.xwork2.ActionSupport" />
+
+ActionSupport 是默认的 Action 类: 若某个 action 节点没有配置 class 属性, 则 ActionSupport 即为
+待执行的 Action 类. 而 execute 方法即为要默认执行的 action 方法
+
+<action name="testActionSupport">
+	<result>/testActionSupport.jsp</result>
+</action>
+
+等同于
+
+<action name="testActionSupport"
+	class="com.opensymphony.xwork2.ActionSupport"
+	method="execute">
+	<result>/testActionSupport.jsp</result>
+</action>
+
+2). 在手工完成字段验证, 显示错误消息, 国际化等情况下, 推荐继承 ActionSupport. 
+	由于ActionSupport类implements Action,Validateable(验证),
+	//ValidationAware(显示错误消息),TextProvider(国际化),LocalProvider
+
+
+2.**注意**
+配置文件中.不要乱加空格
+<action name="user-login" class="com.zc.javaweb.UserAction" method="execute">
+	<result name="LOGIN-SUCCESS">/login-success.jsp</result>
+</action>
+如果class的""里加空格.报错.
+很多时候""里面的内容开头都不要加空格
+
+3.通配符的使用
+<package name="testTongPeiFu" extends="struts-default">
+//*代替请求中的add,remove等
+	<action name="UserAction-*" class="com.zc.javaweb.TestTongPeiFuAction" 
+	method="{1}User">
+		<result name="{1}-success">/success.jsp</result>
+	</action>
+</package>
+
+用{1}代替Action类中的addUser,removeUser方法中的add,remove等
+
+public String addUser(){
+		return "add-success";
+	}
+	
+	public String removeUser(){
+		return "remove-success";
+	}
+
+4.struts2中的request是重新定义的request
+在class StrutsRequestWrapper中
+
+5.ActionContext对象.action的上下文
+ActionContext ac=ActionContext.getContext();
+//获取session
+ac.getSession().put("account",account);
+
+//获取值栈
+ac.getValueStack();
+
+2016/6/6
+默认拦截器
+struts-default.xml中
+  <default-interceptor-ref name="defaultStack"/>
+
+   <interceptor-stack name="defaultStack">
+		 <interceptor-ref name="exception"/>
+		 <interceptor-ref name="alias"/>
+		 <interceptor-ref name="servletConfig"/>
+		 <interceptor-ref name="i18n"/>
+		 <interceptor-ref name="prepare"/>
+		 <interceptor-ref name="chain"/>
+		 <interceptor-ref name="scopedModelDriven"/>
+		 <interceptor-ref name="modelDriven"/>
+		 <interceptor-ref name="fileUpload"/>
+		 <interceptor-ref name="checkbox"/>
+		 <interceptor-ref name="multiselect"/>
+		 <interceptor-ref name="staticParams"/>
+		 <interceptor-ref name="actionMappingParams"/>
+		 <interceptor-ref name="params">
+			  <param name="excludeParams">dojo\..*,^struts\..*,^session\..*,^request\..*,^application\..*,^servlet(Request|Response)\..*,parameters\...*</param>
+		 </interceptor-ref>
+		 <interceptor-ref name="conversionError"/>
+		 <interceptor-ref name="validation">
+			  <param name="excludeMethods">input,back,cancel,browse</param>
+		 </interceptor-ref>
+		 <interceptor-ref name="workflow">
+			  <param name="excludeMethods">input,back,cancel,browse</param>
+		 </interceptor-ref>
+		 <interceptor-ref name="debugging"/>
+	</interceptor-stack>
+
+	<interceptor name="params" class="com.opensymphony.xwork2.interceptor.ParametersInterceptor"/>
+	在xwork-core.jar下
+
+	标签 META-INF下

@@ -1,0 +1,67 @@
+protected Fragment createFragment(){
+	return new CrimeListFragment();
+}
+
+百度天气api
+
+ZC天气预报
+
+
+第一步：粘贴以下代码到应用首页代码的<head>与</head>标签之间 
+<script type="text/javascript" name="baidu-tc-cerfication" 
+data-appid="8147037" 
+src="http://apps.bdimg.com/cloudaapi/lightapp.js"></script>
+
+API key
+uOkUuDV5SE7tvEzv1MSNXuvp
+
+ID
+8147037
+
+secret key
+YN6Z6YMpG2i8su9y7NDoprIwWG9IRYbN
+
+终端
+keytool -list -v -keystore c:\users\Administrator\.android\debug.keystore -alias androiddebugkey -storepass android -keypass androidand 
+
+别名: androiddebugkey                                                                           
+创建日期: 2016-2-29                                                                             
+条目类型: PrivateKeyEntry                                                                       
+证书链长度: 1                                                                                   
+证书[1]:                                                                                        
+所有者: CN=Android Debug, O=Android, C=US                                                       
+发布者: CN=Android Debug, O=Android, C=US                                                       
+序列号: 67b07c13                                                                                
+有效期开始日期: Mon Feb 29 10:54:16 GMT+08:00 2016, 截止日期: Wed Feb 21 10:54:16 GMT+08:00 2046
+
+证书指纹:                                                                                       
+         MD5: 4F:E8:75:36:74:92:4C:08:7E:68:93:B7:D1:CD:27:C4
+         SHA1: ED:D6:EE:52:35:6B:52:80:66:B4:36:74:04:EE:67:35:22:DB:78:C8
+         SHA256: 2E:D2:06:CE:D5:0C:6E:C7:29:78:DB:8F:A2:40:F8:8A:1E:1E:48:75:34:AD:D4:3E:15:D5:D
+0:E0:4F:A7:76:92
+         签名算法名称: SHA256withRSA                                                            
+         版本: 3                                                                                  
+			ED:D6:EE:52:35:6B:52:80:66:B4:36:74:04:EE:67:35:22:DB:78:C8
+
+
+扩展:                                                                                           
+
+#1: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 13 2C 33 EA 26 76 31 C3   E3 A6 15 99 5E 33 EB 08  .,3.&v1.....^3..
+0010: 60 77 98 D6                                        `w..
+]
+]
+
+包名
+q03weather
+
+安全码
+;q03weather
+ED:D6:EE:52:35:6B:52:80:66:B4:36:74:04:EE:67:35:22:DB:78:C8;q03weather
+
+ak
+xNSdArO9WeEF60NFPvBExRSaYxUqGNBS
+
+4iauQLgDcUaC681PZ9H008hu

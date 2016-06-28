@@ -1,0 +1,329 @@
+一.JSP
+1.JSP注释
+<%--heh--%>
+  html注释
+<!--会在浏览器源代码中看见-->
+2.JSP声明
+JSP声明会被转换成对应Servlet的成员变量或成员方法<%!%>
+<%!
+//声明一个整形变量
+public int count;
+//声明一个方法
+public String info()
+{
+	return "hello";
+}
+%>
+
+//输出
+<%
+//将count的值输出后再加1
+out.println(count++);
+%>
+<br/>
+<%
+//输出info()方法的返回值
+out.println(info());
+%>
+
+注意.在声明的方法info()方法内.不能使用out.print().因为out.print()在对应Servlet中是public void _jspService(...)方法里的
+
+3.输出JSP表达式
+<%=count%>
+
+4.JSP脚本<%%>里的所有内容对应于Servlet中的_jspService()方法中.
+<%
+   for(int i=1;i<=9;i++)
+   {
+      for(int j=1;j<=i;j++)
+      {
+	out.print(i+"*"+j+"="+i*j+"&nbsp&nbsp&nbsp&nbsp");
+      }
+      out.print("<br/>");
+   }
+%>
+
+'\r'是回车，'\n'是换行，前者使光标到行首，后者使光标下移一格，通常敲一个回车键，既是回车，又是换行（\r\n）。
+Unix中每行结尾只有“<换行>”，即“\n”；
+Windows中每行结尾是“<换行><回车>”，即“\n\r”；
+Mac中每行结尾是“<回车>”。
+\n是换行，英文是New line，表示使光标到行首
+\r是回车，英文是Carriage return，表示使光标下移一格
+\r\n表示回车换行
+我们在平时使用电脑时，已经习惯了回车和换行一次搞定，敲一个回车键，即是回车，又是换行。
+out:JspWriter对象表示服务器端向客户浏览器输出的流，但是这个流会在response中进行缓冲，并不是直接向客户输出。在一个servlet中，所有的流写入语句执行完后，servlet会把这些语句的缓存内容打包成http响应返回给浏览器。
+
+5.JSP的3个编译指令
+page:该指令针对当前页面
+<%@page import="java.util.Date"%>
+include:指定包含另一个页面.静态include.会将被包含的页面引入本页面.即使不完整
+taglib:定义和访问自定义标签
+
+重要<%@ include file="/commons/common.jsp" %>静态inclue
+和动态include的区别
+jsp:include是先编译一下included.jsp文件,然后再包含 先编译，后包含
+@ include是先把文件包含就来,然后统一编译           先包含，后编译
+
+6.JSP的7个动作指令
+编译指令只在编译成Servlet时起作用.动作指令可以替换成JSP脚本(是jsp的标准化写法)
+jap:forward:页面转发
+(1)//重定向
+   response.sendRedirect("index.jsp");		
+(2)转发
+   request.getRequestDispatcher("index.jsp").forward(request, response);
+   转发
+<jsp:forward page="test.jsp">注意这中间不能写任何话但是可以添加一个param参数子节点</jsp:forward>
+本来是dispatcher.jsp地址栏不变.但是现实的是test.jsp页面
+<jsp:forward page="result.jsp">
+   <jsp:param name="age" value="20"/>
+</jsp:forward>
+
+
+重定向和转发的根地址
+getRequestDispatcher的根目录是项目目录http://localhost:8080/AppName
+request.getRequestDispatcher("/PersonPack/person_page.jsp").forward(request, response);
+
+sendRedirect的根目录是服务器http://localhost:8080
+String contextPath=request.getContextPath();
+response.sendRedirect(contextPath+"/PersonPack/person_page.jsp");
+
+
+
+jsp:param:传递参数
+jsp:include:动态引入jsp页面
+用于包含某个页面.不会导入被include页面的编译指令.仅仅将被导入页面的body内容插入本页面
+<jsp:include page="heh.jsp"/>可以写成单标签
+
+也可以写成成对的标签
+<jsp:include page="hehe.jsp">
+	<jsp:param name="age" vallue="23"/>
+</jsp:include>
+jsp:plugin:
+jsp:useBean
+jsp:setProperty:
+jsp:getProperty
+
+<1>jsp:useBean 在jsp页面中初始化一个java实例
+javaBean所有成员变量均为私有化.在一个包下.有getter.setter方法.一个空参构造器
+重要:JavaBean一定要有一个空参的构造器.还要有getter和setter方法
+setProperty:为JavaBean实例的属性设置值
+getProperty:输出JavaBean实例的属性
+
+<jsp:useBean id="JavaBean的实例名" class="javaBean的实现类" scope="JavvaBean实例的作用范围page或request或session或application">
+
+<2>
+<jsp:setProperty name="JavaBean的实例名" property="需要设置的属性名" value="需要设置的属性值">
+
+<jsp:useBean id="customer" class="com.zc.javaweb.Customer" scope="session" ></jsp:useBean>
+<jsp:setProperty property="age" value="12" name="customer"/>
+
+在forward.jsp页面
+<jsp:forward page="forward_result.jsp" >
+	<jsp:param  name="mima" value="123"/>
+</jsp:forward>
+在forward_result.jsp页面
+<%=request.getParameter("mima") %>
+
+7.JSP9个内置对象
+(1)application:javax.servlet.ServletContext的实例.代表jsp所属的web应用本身
+常用方法getAttribute(String attName),setAttribute(String attName,String attValue),getInitParameter(String paramName)
+
+(2)config:javax.servlet.ServletConfig实例.代表jsp配置信息
+   getInitParameter(String name),getInitParameterNames()
+  
+(3)exception java.lang.Throwable
+(4)out:javax.servlet.jsp.JspWriter实例.代表jsp页面的输出流
+(5)page:代表页面本身.即this
+(6)pageContext:javax.servlet.jsp.PageContext实例.代表该jsp页面的上下文.可以访问页面中的共享数据.
+getServletContext(),getServletConfig()
+(7)request:javax.servlet.http.HttpServletRequest的实例
+封装一次请求
+getParameter(String name),getParameterValues(String name),
+setAttribute(String name,Object value),getAttribute(String name)
+(8)response:服务器对客户端的响应
+(9)session:javax.servlet.http.HttpSession的实例.代表一次会话
+getAttribute(String name),setAttribute(String name,Object value)
+
+
+<1>application举例
+在set_attr.jsp中
+<%!
+int i;
+%>
+<!-- 将i值自加后放入application的变量内 -->
+<%
+application.setAttribute("counter",String.valueOf(++i));
+%>
+<!-- 输出i值 -->
+<%=i%>
+
+在get_attr.jsp中
+<!-- 直接输出application 变量值 -->
+<%=application.getAttribute("counter")%>
+
+在get_attr2.servlet中获取参数
+public void service(...)
+{
+   ServletContext sc=getServletConfig().getServletContext();
+   sc.getAttribute("counter");
+}
+
+<2>application获取初始化参数
+在web.xml中配置初始化参数
+<context-param>
+  <param-name>password</param-name>
+  <param-value>123</param-value>
+</context-param>
+
+在attr.jsp中
+<%
+String a=application.getInitParameter("password");
+out.print(a);
+%>
+
+<2>config举例.代表配置信息.jsp很少配置.所以该对象在Servlet中作用较大
+
+<3>pageContext对象
+使用pageContext对象可以访问page,request,session,application范围的变量
+默认在当前页面有效
+pageContext.setAttribute("name","zc");
+在request范围内有效
+pageContext.setAttribute("name","zc",pageContext.REQUEST_SCOPE);
+SESSION_SCOPE
+APPLICATION_SCOPE
+
+<4>request对象
+String getParameter(String name);
+Enumeration getParameterNames();
+String[] getParameterValues(String name);
+
+get请求
+post请求
+
+重点
+在form.jsp中
+<form method="post" action="doform.jsp">
+   <input type="text" value="hehe" name="txt"/>
+   <input type="submit" value="提交"/>
+</form>
+必须点提交.才会把parameter参数传给doform.jsp
+在doform.jsp中
+<%=request.getParameter("txt")%>
+
+--请求的转发
+request.getRequestDispatcher("/a.jsp").forward(request,response);
+
+<5>response对象
+--重定向 url会变成重定向的地址
+response.sendRedirect("result.jsp");
+
+2016/4/2
+--增加cookie
+--在addCookie.jsp中
+<%
+String sname=request.getParameter("name");
+//(name,value)
+Cookie cookie=new Cookie("username",sname);
+cookie.setMaxAge(3600);
+response.addCookie(cookie);
+%>
+--在浏览器中发get请求.存入cookie
+http://localhost:8080/MyJSP/add_cookie.jsp?name=zc
+
+--在readCookie.jsp中
+<%
+Cookie[] cookies=request.getCookies();
+for(Cookie c:cookies)
+{
+   if(c.getName().equals("username"))
+   {
+      out.print(c.getValue());
+   }
+}
+%>
+
+--中文内容cookie
+//先编码
+Cookie c = new Cookie("cnName",java.net.URLEncoder.encode("孙悟空" , "gbk"));
+...
+//再解码
+for (Cookie cookie : cookies)
+{
+   if(cookie.getName().equals("cnName"))
+   {
+   //使用java.util.URLDecoder对Cookie值进行解码
+      out.println(java.net.URLDecoder.decode(cookie.getValue()));
+   }
+}
+
+<6>session对象:一次会话.是HttpSession的实例
+setAttribute(String name,Object value);
+getAttribute(String name);
+--shop.jsp
+<form method="post" action="processBuy.jsp">
+书籍：<input type="checkbox" name="item" value="book"/><br/>
+电脑：<input type="checkbox" name="item" value="computer"/><br/>
+汽车：<input type="checkbox" name="item" value="car"/><br/>
+<input type="submit" value="购买"/>
+
+--processBuy.jsp
+<%
+//取出session范围的itemMap属性
+Map<String,Integer> itemMap = (Map<String,Integer>)session.getAttribute("itemMap");
+//如果Map对象为空，则初始化Map对象
+if (itemMap == null)
+{
+	itemMap = new HashMap<String,Integer>();
+	itemMap.put("书籍" , 0);
+	itemMap.put("电脑" , 0);...
+}
+//获取上个页面的请求参数
+String[] buys = request.getParameterValues("item");
+//遍历数组的各元素
+for (String item : buys)
+{
+	//如果item为book，表示选择购买书籍
+	if(item.equals("book"))
+	{
+		int num1 = itemMap.get("书籍").intValue();
+		//将书籍key对应的数量加1
+		itemMap.put("书籍" , num1 + 1);
+	}
+	//如果item为computer，表示选择购买电脑
+	else if ...
+}
+//将itemMap对象放到设置成session范围的itemMap属性
+session.setAttribute("itemMap" , itemMap);
+%>
+
+您所购买的物品：<br/>
+书籍：<%=itemMap.get("书籍")%>本<br/>
+电脑：<%=itemMap.get("电脑")%>台<br/>
+汽车：<%=itemMap.get("汽车")%>辆
+<p><a href="shop.jsp">再次购买</a></p>
+
+
+二.Servlet
+service()方法包含
+doGet.doPost.doPut.doDelete
+
+destroy()
+init(ServletConfig config)
+
+1.从Servlet3.0开始.配置Servlet有两种方式:
+(1)在Servlet中使用@WebServlet Annotation进行配置
+   initParams:为该Servlet配置参数
+   loadOnStartup:
+   name:
+   urlPatterns:
+(2)在web.xml中进行配置
+
+
+
+
+
+
+
+
+
+

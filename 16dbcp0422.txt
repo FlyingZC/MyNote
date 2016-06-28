@@ -1,0 +1,64 @@
+2016/4/22
+1.commmons-dbutils
+三个包
+org.apache.commons.dbutils
+|--DbUtils类
+|--QueryRunner类
+org.apache.commons.dbutils.handlers
+重要
+org.apache.commons.dbutils.wrappers
+
+3.DbUtils类
+为做一些诸如关闭连接、装载JDBC驱动程序之类的常规工作提供有用方法的类，它里面所有的方法都是静态的。
+
+public final class DbUtils
+里面方法均为static方法
+
+4.QueryRunner类
+该类简单化了 SQL 查询,它与ResultSetHandler接口(后面将会介绍)组合在一起使用可以完成大部分的数据库操作,能够大大减少编码量
+    java.lang.Object
+        org.apache.commons.dbutils.AbstractQueryRunner
+            org.apache.commons.dbutils.QueryRunner 
+
+   public class QueryRunner extends AbstractQueryRunner
+
+【构造函数（1）：QueryRunner() (2)：QueryRunner(Datasource ds)】。
+A：query(Connectionconn, String sql, Object[] params, ResultSetHandler rsh)方法:
+这一方法执行一个带参数的选择查询，在这个查询中，对象阵列的值
+被用来作为查询的置换参数。这一方法内在地处理PreparedStatement 和ResultSet 的创建和关闭。
+ResultSetHandler对象把从 ResultSet得来的数据转变成
+一个更容易的或是应用程序特定的格式来使用。
+
+D：update(Connectionconn, String sql, Object[] params)方法:这一方法被用来执行一个带参数的插入、更新或删除操作。对象阵列为声明保存着置换参数
+。
+
+5.Package org.apache.commons.dbutils.handlers 这个包下是ResultSetHandler接口的具体实现类
+具体实现Implementations of the org.apache.commons.dbutils.ResultSetHandler interface.
+    Class 类
+    AbstractKeyedHandler<K,V> 	returns a Map.
+    AbstractListHandler<T> 	   convert ResultSet into List.
+    ArrayHandler 						into an Object[].
+    ArrayListHandler 				into a List of Object[]s.
+    BeanHandler<T> 					converts the first ResultSet row into a JavaBean.
+    BeanListHandler<T> 				converts a ResultSet into a List of beans.
+    BeanMapHandler<K,V> 			a Map of Beans.
+    ColumnListHandler<T> 			column into a List of Objects.
+    KeyedHandler<K> 					a Map of Maps.
+    MapHandler 						converts the first ResultSet row into a Map.
+    MapListHandler 					a List of Maps.
+    ScalarHandler<T>					converts one ResultSet column into an Object.
+
+正如它的名字所示，这一接口执行处理一个java.sql.ResultSet，将数据转变并处理为任何一种形式，这样有益于其应用而且使用起来更容易。这一组件提
+供了
+    ArrayHandler ：将ResultSet中第一行的数据转化成对象数组
+    ArrayListHandler将ResultSet中所有的数据转化成List，List中存放的是Object[]
+    BeanHandler ：将ResultSet中第一行的数据转化成类对象
+    BeanListHandler ：将ResultSet中所有的数据转化成List，List中存放的是类对象
+    ColumnListHandler ：将ResultSet中某一列的数据存成List，List中存放的是Object对象
+    KeyedHandler ：将ResultSet中存成映射，key为某一列对应为Map。Map中存放的是数据
+    MapHandler ：将ResultSet中第一行的数据存成Map映射
+    MapListHandler ：将ResultSet中所有的数据存成List。List中存放的是Map
+    ScalarHandler ：将ResultSet中一条记录的其中某一列的数据存成Object等转化类。 ResultSetHandler接口提供了一个单独的方法：Object 
+	 handle(java.sql.ResultSet .rs)。因此任何ResultSetHandler 的执行需要一个结果集（ResultSet）作为参数传入，然后才能处理这个结果集，再返回
+	 一个对象。因为返回类型是java.lang.Object，所以除了不能返回一个原始的Java类型之外，其它的返回类型并没有什么限制。如果你发现这七个执行
+	 程序中没有任何一个提供了你想要的服务，你可以自己写执行程序并使用它。

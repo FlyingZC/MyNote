@@ -1,0 +1,36 @@
+2016/4/23
+解决相对路径问题
+1.在jsp页面.获得本项目的绝对地址
+例:项目名叫App.地址为http://localhost:8080/App/
+<%
+	String path=request.getContextPath();
+	pageContext.setAttribute("bathPaht",path);
+%>
+
+<a href="${pageScope.basePath}/Pack/register.jsp">
+
+2.利用html中的<base>标签
+base元素可规定页面中所有链接的基准url
+默认情况下.页面中的链接(包括样式表.脚本.图片地址)都是
+相对于当前页面的地址(即:浏览器地址的请求url)
+可以使用<base>标签中的href属性来设置所有的"相对基准url"
+
+在common.jsp页面中定义所需的绝对路径和jstl
+<?xml version="1.0" encoding="UTF-8" ?>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
+
+<html>
+<head>
+<base href=""<%=basePath%>"/>
+</head>
+</html>
+
+在其他页面静态include.
+<%@ include file="/commons/common.jsp" %>

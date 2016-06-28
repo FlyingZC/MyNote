@@ -1,0 +1,41 @@
+2016/4/29
+1.分页
+(1)index.jsp
+上链接<a>href="servlet/MatchServlet?action=pminfospage"</a>
+(2)新建分页类PageBean<T>
+属性currentPage
+totalPages
+totalRows
+List<T> data:然后在MatchDaoImpl中.当返回的data的类型为LIst<Map<String,Object>>类型
+则其中的T为Map<String,Object>
+pageSize
+其中
+totalPages的get方法
+public void getTotalPages()
+{
+	return totalRows%pageSize==0?totalRows/pageSize:(totalRows/pageSize+1);
+}
+
+(2)MatchServlet中
+	doGet()中
+	if("pminfospage".equals(action))
+	privateMatchInfosByPage(request, response);
+
+	privateMatchInfosByPage()方法中
+	接收具体查询页面发来的上一页.下一页之类的请求
+
+	如果.为Null
+	初始化为第一页.和页大小
+
+	调用MatchDaoImpl
+	里的public PageBean<Map<String, Object>> pmInfos(int currentPage, int pageSize)方法
+	
+(3)MatchDaoImpl中
+	public PageBean<Map<String, Object>> pmInfos(int currentPage, int pageSize)方法
+	先查询所有学生数目 作为 TotalRows
+	再通过currentPage 和pageSize
+	计算要显示的数据data
+	查询并返回data到MatchServlet中
+
+(4)在页面输出
+注意.遍历的不是pageBean.遍历的是pageBean里的data

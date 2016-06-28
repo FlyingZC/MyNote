@@ -1,0 +1,435 @@
+一.jQuery选择器
+1.jQuery要导入库，将jquery文件和html文件放在一个文件夹里
+<head>
+<script type="text/javascript" src="jquery.js"></script>
+//当自己写的jQuery很多.可以单独放在.js文件里导入
+<script type="text/javascript" src="my_jquery_functions.js"></script>
+</head>
+$(document).ready(function(){})可以缩写成$function({})
+相当于js中的window.onload=function(){} 
+
+jQuery对象不能使用dom对象的属性和方法，反之亦然。
+dom对象转化为jQuery对象
+var $btn=$("button");
+jQuery对象转化为dom对象
+var btn=$btn[0];
+
+jQuery对象是使用$()包装dom对象后产生的对象
+$("select:selected").each(function(){
+	alert(this.value);
+	下面这句和上面作用相同
+	alert($(this).val());
+})
+
+jQuery选择器永远返回一个数组对象.若没找到指定元素.返回空数组对象
+判断一个jQuery对象是否存在.$("tr".length>0){}
+2.基本选择器
+$("#btn1"),#用来选择id，此处id为btn1
+$(".mini"),.用来选择class,此处class为mini
+$("div"),选择元素名，直接写
+$("*"),选择所有
+$("span,#two")，选择所有元素为span的元素和所有id为two的元素
+$("p.intro") 选取所有class="intro"的<p>元素。中间不加空格
+
+3.层次选择器
+通过dom元素之间的层次关系来获取特定元素，如子元素
+$("body div"),body元素里的所有div元素(可以是孙子...)
+$("body>div"),body元素的子节点是div的元素
+$("#one+div"),id为one的下一个div,这个div必须和one相邻
+$("#two~div"),id为two的后面所有div
+$("#two").siblings("div"),two的所有div兄弟
+$("#one").nextAll("span"),one后面所有span
+$("#one").nextAll("span:first"),one后面的下一个span,可以不相邻
+$("#two").prevAll("div"),two前面所有div
+
+4.过滤选择器
+通过特定的过滤规则筛选所需的dom元素,以:开头
+按照过滤规则分类：
+(1)基本过滤选择器
+:first 例$("div:first")选择第一个div元素
+:last  例$("div:last")选择最后一个div元素
+:not(去除) 例$("div:not(.one)")选择class不为one的所有div
+:even  例$("div:even")选择偶数div
+:odd   例$("div:odd")选择奇数div
+:gt()  例$("div:gt(3)")索引大于三
+:lt()  例$("div:lt(3)")索引小于三
+:eq()  例$("div:eq(3)")索引等于三
+:header例$(":header")选择标题
+:animated $(":animated")选择动画
+$("#two").nextAll("span:first"):选择Id为two的下面一个span
+
+(2)内容过滤选择器
+体现在它所包含的子元素和文本内容上
+:contains(text) 选取含有文本内容为text的元素
+:empty 选取不包含子元素或文本的空元素
+:has(selector) 选取含有选择器所匹配的元素
+:parent 选取含有子元素或者文本的元素
+
+(3)可见性过滤选择器
+:visible 例$("div:visible") 可见的div
+:hidden  例$("div:hidden").length
+	   $("div:hidden").show(2000);
+
+(4)属性过滤选择器
+通过元素的属性来获取相应的元素
+$("div[title]") 选取含有title属性的div
+$("div[title='test']") 选取title为test的div
+$("div[title!='test']")不为test
+$("div[title^='te']")选取以te开始的title的div
+$("div[title$='est']")选取以est结尾
+$("div[title*='es']")含有es的
+$("div[id][title*='es']")有id且title含有es
+$("div[title][title!='test']")含有title且title不为test的div
+
+(5)子元素过滤选择器
+选子元素
+   nth-child()选择器
+<1>nth-child(even/odd):选取每个父元素下索引值为偶(奇)的元素
+<2>nth-child(2):选取每个父元素下索引值为2的元素
+   $("div.one :nth-child(2)")选取div且class为one的元素下索引为2的子元素
+<3>nth-child(3n):选取每个父元素下索引值为3的倍数的元素
+<4>nth-child(3n+1):选取每个父元素下索引值为3n+1的元素
+<5>$("div.one :first-child"):选取div下第一个子元素
+<6>$("div.one :last-child"):选取div下最后一个子元素
+<7>$("div.one :only-child"):选取div下只有一个子元素的子元素
+
+(6)表单对象属性过滤选择器
+对所选择的表单元素进行过滤
+:enabled 选取所有可用元素
+:disabled 选取所有不可用元素
+:checked 选取所有被选中的元素(单选框、复选框)
+:selected 选取所有被选中的选项元素(下拉列表option元素)
+均返回集合元素
+
+(7)基本表单选择器
+:input
+:text
+:password
+:radio
+:checkbox
+:submit
+:image
+:reset
+:button
+(7)jQuery的css选择器
+jQuery CSS 选择器可用于改变 HTML 元素的 CSS 属性。
+下面的例子把所有 p 元素的背景颜色更改为红色：
+$("p").css("background-color","red");
+
+5.jQuery事件函数
+<script type="text/javascript">
+$(document).ready(function(){
+  $("button").click(function(){
+    $("p").hide();
+  });
+});
+</script>
+
+二.jQuery效果 
+1.隐藏和显示
+hide();
+show();
+可以加控制速度的参数fast,slow,或毫秒数字
+show(1000);
+toggle()显示被隐藏的文本.隐藏显示的文本
+$("p"). toggle();
+
+2.淡入淡出
+fadeIn()淡入
+$("button").click(function(){
+    $("#div1").fadeIn();
+    $("#div2").fadeIn("slow");
+    $("#div3").fadeIn(3000);
+});
+
+fadeOut()淡出
+fadeToggle()
+fadeTo("slow",07)淡出到原来的70%透明度
+
+3.滑动(类似于出现下拉框的效果.点按钮出现菜单)
+slideDown():向下滑动元素
+slideUp():
+slideToggle():
+
+4.jQuery动画
+jQuery animate() 方法允许您创建自定义的动画。
+默认情况下，所有 HTML 元素的位置都是静态的，并且无法移动。如需对位置进行操作，记得首先把元素的 CSS position 属性设置为 relative、fixed 或 absolute。
+//添加动画.高度可以隐藏出现.即出现消失
+ $("div").animate({
+      height:'toggle'
+    });
+5.停止动画
+  $("#panel").stop();
+ 
+由于js是逐行解释执行的.所以要想在动画执行完后实现弹窗
+$("p").hide(1000,function(){
+alert("The paragraph is now hidden");
+});
+
+6.jQuery方法的连缀.
+$("#p1").css("color","red").slideUp(2000).slideDown(2000);
+
+
+5.jQuery对象常用方法
+<1>val():获取或设置表单元素的value属性值
+   设置值 $(":text:enabled").val("zc");
+   获取值 alert($(":text:enabled").val());
+
+<2>attr() 和val()方法类似
+   attr(name,val) 为name属性赋值
+   例val $("#bj").attr("id","heh");将$bj节点的id赋值为heh 
+   attr(name) 获取name属性值
+
+<3>each() 对jQuery对象进行遍历,其参数为function,函数内部的this是正在遍历的dom对象
+$("select:selected").each(function(){
+	alert(this.value);
+})
+
+<4>text():和val()方法类似
+text():获取元素节点的文本子节点的值
+text(str):设置元素结点的文本子节点的值
+
+<5>$.trim(str):可移除str的前后空格
+
+6.jQuery中的dom操作 
+DOM = Document Object Model（文档对象模型）
+dom操作分类:
+[1]dom core:核心dom.处理网页和任何一种用标记语言编写的文档，如xml
+[2]html dom:使用javascript和dom为html文件编写脚本时,有许多专属于html-dom的属性
+[3]css-dom:针对css操作,用于获取和设置style对象的各种属性
+
+<1>核心dom中的操作
+[1]查找操作结点
+使用 jQuery 操作文本节点, 属性节点,及查找元素节点
+$(function(){
+   //1. 操作文本节点: 通过 jQuery 对象的 text() 方法
+   alert($("#bj").text());
+   $("#bj").text("hehe");
+   //2. 操作属性节点: 通过 jQuery 对象的 attr() 方法. 
+   //注: 直接操作 value 属性值可以使用更便捷的 val() 方法. 
+   //选择input type="text" 且name属性为username
+  //name: <input type="text" name="username" value="at"/>
+   alert($(":text[name='username']").attr("value"));
+   $(":text[name='username']").attr("value", "尚");
+})
+
+[2]创建节点并插入节点到指定节点中
+|1|append或appendTo创建一个li结点并添加到#city的子节点
+$("<li id='zc'>呵呵</li>").appendTo($("#city"));
+或者用
+$("#city").append("<li id='zc'>呵呵</li>");
+
+|2|prepend或prependTo加到第一个子节点前面
+$("<li id='zc'>呵呵</li>").prependTo($("#city"));
+$("#city").prepend("<li id='zc'>呵呵</li>");
+
+|3|insertAfter创建节点并插入到#bj后面
+$("<li id='zc'>呵呵</li>").insertAfter($("#bj"));
+   after在#bj后面插入节点
+$("#bj").after("<li id='zc'>呵呵</li>");
+
+|4|insertBefore创建节点并插入到#bj前面
+$("<li id='zc'>呵呵</li>").insertBefore($("#bj"));
+   before在#bj前面创建节点
+$("#bj").before("<li id='zc'>呵呵</li>");
+
+2016/2/4
+[3]清空节点
+|1|remove() 删除当前节点和其子节点 $("#game").empty();删除game节点
+|2|empty()  清空.删除当前节点的子节点 $("#game").empty();删除game的子节点
+
+[4]复制节点
+clone(): 克隆匹配的 DOM 元素,,返回值为克隆后的副本.但此时复制的新节点不具有任何行为.
+$("#d1").clone().insertAfter($("#d2")).attr("id","d3");
+$("#d3").css("color","red");
+clone(true):复制元素的同时也复制元素中的的事件
+例$("#bj").clone(true).attr("id", "bj2").insertAfter($("#rl"));
+克隆bj节点,并克隆其事件(true),返回值为副本.将副本的id值改为bj2.将副本插入到rl后
+
+[5]替换节点
+replaceAll 例$("<li>zcc<li>").replaceAll($("#city li:last"));
+用li节点替换city下li节点的最后一个结点
+replaceWith 例
+$("#city li:eq(1)").replaceWith($("<li>zcx</li>"));
+将city下下标为1的li节点(从0开始)替换为zcx
+
+[6]包裹节点
+wrap():将指定节点用其他标记包裹起来,用于需要在文档中插入
+     //包装 li 本身(每一个li分别被包起来)
+$("#game li").wrap("<font color='red'></font>");
+wrapAll():
+   //包装所有的 li(将所有li用一个包起来)
+$("#city li").wrapAll("<font color='red'></font>");
+//包装li里边的文字. (li不变色 但是li里面包起来 变色)
+$("#language li").wrapInner("<font color='red'></font>");
+
+例
+原先
+<p>段落1</p>
+<p>段落2</p>
+<p>段落3</p>
+(1)$("p").wrap("<span></span>");
+结果
+<span><p>段落1</p></span>
+<span><p>段落2</p></span>
+<span><p>段落3</p></span>
+(2)$("p").wrapAll("<span></span>");
+结果
+<span>
+	<p>段落1</p>
+	<p>段落2</p>
+	<p>段落3</p>
+</span>
+(3)$("p").wrapInner("<span></span>");
+结果
+<p><span>段落1</span></p>
+<p><span>段落2</span></p>
+<p><span>段落3</span></p>
+
+
+
+[7]html()方法:获取该节点的html代码和修改html代码
+alert($("#city").html()) city节点的html代码
+$("#city").html("<li>heh</li>") 将city节点里的代码换成..
+
+[8]val()方法:修改文本框的文本值  focus:聚焦,blur离开
+$(function(){
+		$(":text").focus(function(){
+			var val=$(this).val();
+			if(val==this.defaultValue)
+			{
+				$(this).val("");
+			}
+		})
+		.blur(function(){
+			var val=this.value;
+			if($.trim(val)==""){
+				this.value=this.defaultValue;
+			}
+		});
+	})
+
+[9]元素遍历方法
+children():获取当前元素包含的所有子元素
+next():获取当前元素相邻的下一个同级元素
+prev():获取当前元素相邻的上一个同级元素
+parent():获取当前元素的父元素
+
+
+
+2016/3/27
+1.获得内容 - text()、html() 以及 val()
+三个简单实用的用于 DOM 操作的 jQuery 方法：
+text() - 设置或返回所选元素的文本内容
+html() - 设置或返回所选元素的内容（包括 HTML 标记）
+val() - 设置或返回表单字段的值.文本
+文本框里输入的内容.用text()获取不到.得用val()
+
+2.获取属性 - attr()
+jQuery attr() 方法用于获取属性值。
+下面的例子演示如何获得链接中 href 属性的值：
+$("button").click(function(){
+  alert($("#w3s").attr("href"));
+});
+
+3.设置内容
+$("#btn1").click(function(){
+  $("#test1").text("Hello world!");
+});
+$("#btn2").click(function(){
+  $("#test2").html("<b>Hello world!</b>");
+});
+$("#btn3").click(function(){
+  $("#test3").val("Dolly Duck");
+});
+
+4.设置属性
+$("button").click(function(){
+  $("#w3s").attr("href","http://www.w3school.com.cn/jquery");
+});
+
+5.添加元素
+append() - 在被选元素的子元素结尾插入内容
+prepend() - 在被选元素的子元素开头插入内容
+after() - 在被选元素之后插入内容
+before() - 在被选元素之前插入内容
+
+6.删除元素
+删除元素/内容
+如需删除元素和内容，一般可使用以下两个 jQuery 方法：
+remove() - 删除被选元素（及其子元素）
+empty() - 从被选元素中删除子元素
+remove() 方法也可接受一个参数，允许您对被删元素进行过滤。
+该参数可以是任何 jQuery 选择器的语法。
+下面的例子删除 class="italic" 的所有 <p> 元素：
+$("p").remove(".italic");
+
+7.获取并设置CSS类
+jQuery 拥有若干进行 CSS 操作的方法。我们将学习下面这些：
+addClass() - 向被选元素添加一个或多个类
+removeClass() - 从被选元素删除一个或多个类
+toggleClass() - 对被选元素进行添加/删除类的切换操作
+css() - 设置或返回样式属性
+$("p").addClass("lei lei2");像p元素添加两个新类
+
+$("p").css("background-color","yellow");
+$("p").css({"background-color":"yellow","font-size":"200%"});
+
+8,尺寸
+jQuery 提供多个处理尺寸的重要方法：
+width()
+height()
+innerWidth():height+内边距
+innerHeight()
+outerWidth():height+margin+padding
+outerHeight()
+
+width() 方法设置或返回元素的宽度（不包括内边距、边框或外边距）。
+height() 方法设置或返回元素的高度（不包括内边距、边框或外边距）。
+
+二.jQuery遍历
+1.遍历 - 祖先
+向上遍历 DOM 树
+这些 jQuery 方法很有用，它们用于向上遍历 DOM 树：
+parent():选取父元素
+parents():选取所有祖先元素
+parentsUntil()
+2.向下遍历 DOM 树
+下面是两个用于向下遍历 DOM 树的 jQuery 方法：
+children():返回所有直接子元素
+find()方法返回被选元素的后代元素，一路向下直到最后一个后代
+3.兄弟元素
+在 DOM 树中水平遍历
+有许多有用的方法让我们在 DOM 树进行水平遍历：
+siblings() 方法返回被选元素的所有同胞元素。
+next() 方法返回被选元素的下一个同胞元素。
+nextAll()方法返回被选元素的所有跟随的同胞元素。
+nextUntil()
+prev()
+prevAll()
+prevUntil()
+4.过滤
+缩小搜索元素的范围
+三个最基本的过滤方法是：first(), last() 和 eq()，
+它们允许您基于其在一组元素中的位置来选择一个特定的元素。
+其他过滤方法，比如 filter() 和 not() 允许您选取匹配或不匹配某项指定标准的元素。
+
+first() 方法返回被选元素的首个元素。
+下面的例子选取首个 <div> 元素内部的第一个 <p> 元素：
+$(document).ready(function(){
+  $("div p").first();
+});
+
+ $("p").eq(1);
+filter() 方法允许您规定一个标准。不匹配这个标准的元素
+会被从集合中删除，匹配的元素会被返回。
+$("p").filter(".intro");
+
+not()
+ $("p").not(".intro");
+
+2016/3/27
+1.jQuery链式语法
+$("<input type='button' value='按钮1'/> <input type='button' value='按钮2'/>).
+appendTo($("body"));
+

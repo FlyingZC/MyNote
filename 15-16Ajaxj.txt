@@ -1,0 +1,79 @@
+Ajax
+1.异步的JavaScript和xml(的缩写)
+允许浏览器与服务器通信而无需刷新当前页面的技术都叫Ajax
+一种不用刷新整个页面便可与服务器通讯的办法
+2.在传统Web模型中,客户端向服务器发送一个请求,服务器返回整个页面,如此反复
+在Ajax模型中,数据在客户端与服务器之间独立传输,服务器不再返回整个页面
+3.不用刷新整个页面便可与服务器通讯的办法
+-Flash
+-Java applet
+-框架:如果使用一组框架构造了一个网页,可以只更新其中一个框架
+-隐藏的iframe
+-XMLHttpRequest:该对象是对JavaScript的一个扩展,可使网页与服务器进行通信.是创建Ajax应用的最佳选择.(基本上就是Ajax)
+4.Ajax工作原理
+客户端:xhtml,css,JavaScript
+传输:
+--协议:xml,http.
+--载体:文本,xml,json
+服务器端:php等语言输出结果
+5.Ajax缺陷
+-页面局部刷新,导致后退等功能失效
+-对流媒体支持没有flash,javaApplet好
+
+6.XMLHttpRequest属性
+responseXML:服务器的响应.表示为xml.这个对象可以解析为dom对象
+status:服务器
+7.XMLHttpRequest的方法
+open("method","url"):建立对服务器的调用.method参数可以是get,post或put,url可以是相对url或绝对url
+send(content):向服务器发送请求
+setRequestHeader("header","value"):把指定首部设置为所提供的值.在设置任何首部之前必须调用open()
+
+8.
+<?xml version="1.0" encoding="UTF-8" ?>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Insert title here</title>
+<script type="text/javascript">
+	window.onload=function(){
+		//1.获取a节点.为其添加Onclick响应函数
+		document.getElementsByTagName("a")[0].onclick=function(){
+		//3.创建一个XMLHttpRequest对象
+		var request=new XMLHttpRequest();
+		//4.准备发送请求的数据:url
+		var url=this.href;
+		var method="GET";
+		//5.调用XMLHttpRequest对象的open方法
+		request.open(method,url);
+		//6.调用XMLHttpRequest对象的send方法
+		request.send(null);
+		//7.为XMLHttpRequest对象添加onreadystatechange响应函数
+		request.onreadystatechange=function(){
+		//8.判断响应是否完成:XMLHttpRequest对象的readyState属性值为4的时候
+			if(request.readyState==4){
+		//9.再判断响应是否可用:XMLHttpRequest对象status的属性值为200
+				if(retuest.status==200||request.status==304){
+		//10.打印响应结果:responseText
+					alert(request.responseText);					
+				}
+			}
+		}
+			//2.取消a节点的默认行为
+			return false;
+		}
+	}
+</script>
+</head>
+<body>
+	<a href="helloAjax.txt">Hello Ajax!</a>
+</body>
+</html>
+
+2016/4/30
+1.html由一些普通文本组成.如果服务器通过XMLHttpRequest发送html.文本将存储在responseText属性中
+不需要从responseText属性中读取数据.因为他里面存了你发的html.直接将其插入到页面中即可.
+插入html最简单的方法是更新这个元素
+innerHTML属性

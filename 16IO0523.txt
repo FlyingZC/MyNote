@@ -1,0 +1,70 @@
+2016/5/23
+IO流
+1.java.io.File类的使用
+2.文件流
+FileInputStream
+FileOutputStream
+FileReader
+FileWriter
+3.缓冲流
+BufferedInputStream
+BufferedOutputStream
+BufferedReader
+BufferedWriter
+4.转换流
+InputStreamReader
+OutputStreamWriter
+
+5.标准输入/输出流
+
+6.打印流
+7.数据流
+
+8.对象流
+9.
+
+
+1.File类
+仅仅能创建,删除,重命名文件.涉及内容需要流
+(1)绝对路径
+文件路径d:/io/helloworld.txt
+在java中
+File file1=new File("d:/io/helloworld.txt");
+或File file1=new File("d:\\io\\helloworld.txt");
+
+(2)相对路径
+相对于当前工程的根目录
+File file1=new File("helloworld.txt");
+
+2.流的分类
+(1)字节流 字符流
+(2)输入流 输出流
+(3)节点流(程序直接操作文件) 处理流(包裹在节点流外面)
+节点流:FileInputStream,FileOutputStream,FileReader,FileWriter
+
+3.四个抽象基类
+      |   字节流	  | 字符流 |
+输入流| InputStream | Reader |
+输出流| OutputStream| Writer |
+
+4.IO流体系
+访问数组:ByteArrayInputStream,ByteArrayOutputStream,CharArrayReader,CharArrayWriter
+缓冲流:BufferedInputStream,BufferedOutputStream,BufferedReader,BufferedWriter
+转换流:InputStreamReader,OutputStreamWriter
+
+
+5.
+(1)节点流:read均为阻塞式
+	(里的文件流) 
+	FileInputStream,FileOutputStream,FileReader,FileWriter
+(2)处理流:
+	[1]缓冲流 提升效率BufferedInputStream,BufferedOutputStream,BufferedReader,BufferedWriter
+	[2]转换流
+	InputStreamReader:字节流转换为字符流 读入 解码 字节数组->字符串
+	OutputStreamWriter:字符流转换为字节流 输出
+
+
+2016/6/1
+对象序列化
+对象序列化机制允许把内存中的java对象转换成平台无关的二进制流.从而允许把这种二进制流持久的保存在磁盘上.或通过网络将这种二进制流传输到另一个网络节点.当其他程序获取这种二进制流.就可以恢复成原来的java对象
+实现Serializable接口或Externalizable

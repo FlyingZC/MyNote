@@ -1,0 +1,129 @@
+1.在xml中
+<Button 
+   onclick:fangfaming;
+/
+>
+2.在java类中
+public void fangfaming(View v){}
+
+内部类实现
+btn.setOnClickListener(new View.OnClickListener(){
+	
+})
+
+3.实现接口的方式
+public class MainAcitvity extends Acitvity implements 
+View.OnClickListener
+{
+   //
+   btn.stOnClickListener(this);
+
+   @Override
+   public void onClick(View v){
+      switch(v.getId()){
+         case R.id.button3:
+
+	 break;
+	 case R.id.button4:
+
+	 break;
+      }
+   }
+}
+
+4.自定义内部类(有名字)
+btn.setOnClickListener(actionListener);
+OnClickListener actionListener=new OnClickListener();
+
+
+
+---
+AndroidManifest.xml
+
+
+---
+layout.xml
+<Button 
+android:id="bt1"/>
+
+---
+public class MyActivity extends Activity{
+   private CheckBox cb1,cb2,cb3;
+   private Button bt1;
+   //开关
+   private Switch switch1;
+   //权值
+   private int value;
+   protected void onCreate(Bundle savedInstanceState){
+	super.onCreate(savedInstanceState);
+	setContentView(R.layout.mylayout);
+	cb1=(CheckBox)findViewById(R.id.checkbox1);
+   }
+   cb1.setOnCheckedChangeListener(this);
+   switch1.setOnCheckedChangeListener(new 
+   CompundButton.OnCheckdeChangeListener(){
+      
+   })
+
+   @override
+   public void onCheckdeChanged(){
+	int val1=0,val2=0,val3=0;
+      if(cb1.isCheckde()){
+         val1=1;
+      }
+      if(cb2.isCheckde()){
+         val2=2;
+      }
+      if(cb3.isCheckde()){
+         val3=4;
+      }
+
+      value=val1+val2+val3;
+   }	
+}
+
+
+RadioButton CheckBox单选框复选框
+
+
+mylayout.xml
+<Switch 
+   android:layout_width=""
+   android:textOff="off"
+   android:textOn="on"
+/>
+
+
+
+ImageView及其子类
+ImageView
+
+<ImageView
+   android:maxHeight="200dp"
+   android:maxWidth="100dp"
+   android:adjustView="true"
+   android:scaleType="fitStart"
+   android:src="@drawable/gl"
+/>
+
+---
+MainActivity类
+public class MainActivity extends Activity implements 
+View.OnTouchListener{
+   ImageView iv;
+   setContentView(R.layout.main);
+   iv=(ImageView)findViewById(R.id.imageview);
+   iv.setOnTouchListener(this);
+   private int[] images=(R.drawable.g1,.....);
+   private currentImage=0;
+   public boolean onTouch(View v,MotionEvent event){
+      switch(event.getAction()){
+         //按下
+	 case MotionEvent.ACTION_DOWN;
+	 //startX是本身的属性.无需声明
+	 startX=event.getX();
+	 break;
+
+      }
+   }
+}

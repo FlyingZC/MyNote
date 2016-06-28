@@ -1,0 +1,52 @@
+//json中Key和value必须都是字符串.即使变量是字符串.也要加上引号
+$.getJSON(url,args,function(data){
+				alert("hehe");
+				$("#bookName").text(data.bookName);
+				$("#totalBookNumber").text(data.totalBookNumber);
+				$("#totalMoney").text(data.totalMoney);
+				
+			});
+
+			//String result=new String("<span>"+bookName+shoppingCar.getTotalBookNumber()+shoppingCar.getTotalMoney()+"</span>");
+
+1.servlet中返回字符串
+HttpServletResponse resp;
+PrintWriter out = resp.getWriter();
+out.write(String.valueOf(str));
+
+2.返回json
+response.setContentType("application/json;charset=UTF-8");//必须的设置，返回串类型指定json
+
+out.write("{success:\"0\",fileName:\"您请求的内容不存在!\"}");//楼主参考我的写法
+
+也就是：String str="{success:\"true\"}";
+
+
+
+
+//下面这个好用
+response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json; charset=utf-8");
+		String jsonStr = "{\"bookName\":\"AAA\",\"totalBookNumber\":\"33\",\"totalMoney\":\"32232\"}";
+		System.out.println(jsonStr);
+		PrintWriter out = null;
+		try {
+		    out = response.getWriter();
+		    out.write(jsonStr);
+		} catch (IOException e) {
+		    e.printStackTrace();
+		} finally {
+		    if (out != null) {
+		        out.close();
+		    }
+		}
+
+3.返回html
+response.setContentType("text/html");
+response.setCharacterEncoding("UTF-8");
+response.getWriter().print(result.toString());
+
+$.post(url,args,function(data){
+				alert("hehe");
+				$("#bookName").append(data);
+			});

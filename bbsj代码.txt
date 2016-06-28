@@ -1,0 +1,64 @@
+1.<script type="text/javascript">
+	function logout() 
+	{
+		if (confirm("您确定要退出系统吗？")) 
+		{
+		  window.location="servlet/UserServlet?method=loginout";
+		}
+	}
+</script>
+
+
+2.window.location是定位到
+window.location.href是当前页面的地址
+是定位到另一个地址的语句,有点像WINDOW.OPEN区别是前者不打开新页面
+function login()
+{
+	var curPage=window.location.href;//当前页面地址
+	window.location.href="login.jsp?prePage="+curPage;//修改地址栏
+}
+
+3.点个人中心.没登录提示登录.登录显示个人中心
+function checkUserLogin()
+{
+	var nickName='${name}';
+	if ('${name }'==null||'${name }'=="") 
+	{
+		alert("您还未登陆！");
+	} else 
+	{//定位到....
+		window.location="servlet/UserServlet?method=getUser&nickName="+ni
+		ckName;
+	}
+}
+
+4.点个人中心
+BBS/servlet/UserServlet?method=getUser&nickName=heh
+->调用UserServlet里的getUser()方法->UserService->UserDaoImpl查询
+UserDaoImpl中的getUser查询的user,role,constatus三张表的值分别放入对象中.在存入list中
+->UserServlet中getUser()转发到
+->UserInfo.jsp界面
+<td>昵称</td>  
+<td>${requestScope.userlist[0].nickName}</td>  
+输出
+
+
+
+为按钮添加链接跳转到修改个人信息的Servlet中
+bootstrap的按钮
+<Button type="button" class="btn btn-primary col-md-offset-5" onclick="userModify()">
+修改个人信息</Button>
+
+<script type="text/javascript">
+	function userModify(){
+	  var name='${name}';
+	  window.location="servlet/UserServlet?method=userModify"+"&name="+name;
+	}
+</script>
+
+5.在修改个人信息页面
+提交到UserServlet?method=modifySuccess
+
+
+
+

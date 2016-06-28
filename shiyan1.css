@@ -1,0 +1,222 @@
+.container
+{
+	width: 1200px;
+	height: 800px;
+	background-color: #F6F6F6;
+	border:solid 1px #BCBCBC;
+	margin-top:0;
+	margin-left:auto;
+	margin-right: auto;
+	margin-bottom: auto;
+}
+.container.navigation
+{
+	height:25px;
+	background-color:#96B97D;
+	color:white;
+}
+.navigation>span
+{
+	padding-left:25px;
+	font-size: small;
+}
+
+.container.main
+{
+	height:680px;
+}
+.main_left
+{
+	float:left;
+	width:180px;
+	height:650px;
+	background-color: white;	
+	margin-left: 70px;
+	margin-top:20px;
+	color:black;
+}
+.main_center
+{
+	float:left;
+	width:750px;
+	height:665px;
+	background-color: white;
+	margin-left:15px;
+	margin-top:20px;
+	color:black;
+}
+.main_right
+{
+	float:left;
+	width:165px;
+	height:400px;
+	margin-left:15px;
+	margin-top:20px;
+}
+
+/*jsp标题*/
+.tjsp
+{
+	height:30px;
+	background-color:#F0F0F0;
+	color:#A3A3A3;
+	border:solid 1px #E4E4E4;
+	font-size:normal;
+}
+
+/*jsp菜单栏白边*/
+#jspcdl
+{
+	margin:5px;
+}
+
+/*jsp菜单*/
+.jspcd
+{
+	background-color:#F6F4F0;
+	color:black;
+	border:solid 1px #EFEFEF;
+	font-size:small;
+	padding-top:2px;
+	padding-bottom: 2px;
+}
+
+/*高级教程标题*/
+#tgjjc
+{
+	height:35px;
+	color:#64854C;
+}
+
+/*以下为中间*/
+
+/*jsp简介*/
+#jspjj
+{
+	height:40px;
+	background-color:#FBFBFB;
+	color:black;
+	text-align: right;
+	font-size:15px;
+	border-style: solid;
+	border-width: 1px;
+	border-color:#D4D4D4;
+	
+	
+}
+
+/*中间第二栏 内容*/
+#jspjjnr
+{
+	
+	height:170px;
+	font-size: 16px;
+	line-height: 250%;
+	border-bottom-style: solid;
+	border-bottom-width:1px ;
+	border-bottom-color:#D4D4D4;
+	padding-left:5px;
+	padding-top:5px;
+	
+}
+
+/*中间第三栏*/
+#main_center_3
+{
+	height:90px;
+}
+.title
+{
+	font-size:25px;
+	font-weight: bold;
+	margin-top:10px;
+	margin-bottom: 10px;
+	
+}
+
+#main_center_4
+{
+	border-top:#F4F4F4 solid 10px;
+	border-left:#DDDDDD solid 3px;
+	border-bottom: #DDDDDD solid 1px;
+	border-right: #DDDDDD solid 1px;
+	font-size: 12px;
+	line-height: 200%;
+	
+	
+}
+#main_center_4 .white
+{
+	background-color:#FBFBFB;
+}
+#main_center_4 .other
+{
+	background-color:#F4F4F4;
+}
+
+#main_center_4 .line1
+{
+	position:relative;
+	left:20px;
+}
+#main_center_4 .line2
+{
+	position:relative;
+	left:70px;
+}
+#main_center_4 .line3
+{
+	position:relative;
+	left:120px;
+}
+#main_center_4 .line4
+{
+	position:relative;
+	left:170px;
+}
+#main_center_4 .line5
+{
+	position:relative;
+	left:220px;
+}
+#main_center_4 .line1
+{
+	position:relative;
+	left:20px;
+}
+#main_center_4 .line1
+{
+	position:relative;
+	left:20px;
+}
+
+#main_center_5
+{
+	border-top: #DDDDDD solid 1px;
+}
+
+/*下面为主体右侧*/
+.main_right .content
+{
+	border:white solid 1px;
+	color:black;
+	font-size: 13px;
+	font-weight: bold;
+	line-height: 200%;
+}
+
+.footer
+{
+	color:black;
+	margin-top: 10px;
+	font-size:10px;
+	text-align: center;
+	padding-top:30px;
+}
+.fonter .cu
+{
+	font-weight: bold;
+}
+
+
+

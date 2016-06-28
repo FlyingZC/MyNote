@@ -1,0 +1,51 @@
+2016/4/19
+1.总体架构
+view:jsp+el+jstl
+controller:Servlet
+Model:pojo(Plain Old Java Object)
+Service->DAO->MySQL
+2.数据源:c3p0
+jdbc工具:DBUtils
+事务解决方案:Filter+ThreadLocal
+Ajax解决方案:jQuery+JavaScript+JSON+google-gson
+层之间解耦方案:工厂设计模式
+3.难点
+分页解决方案
+带查询条件的分页(分页时候查询不丢失)
+事务解决方案:Filter+ThreadLocal
+4.实体类设计
+Account:账户 一个用户有一个账户
+User:用户
+Trade:交易 一个用户对应多个交易
+TradeItem:交易项 一个交易对应多个交易项
+Book:书
+
+ShoppingCartItem:购物车商品
+ShoppingCart:购物车
+
+5.Dao层设计
+Dao接口 暂且
+BaseDao 使用DBUtils具体实现
+BookDao接口 书的Dao
+BookDaoImpl 使用BaseDao中的方式实现BookDao
+
+6.分页
+共xx页 当前第x页 下一页 末页 转到x页
+第一页 没有首页
+最后一页 没有下一页
+class Page<T>
+{	
+	pageNo:当前第几页
+	list商品列表 
+	pageSize:当前页面显示的记录商品数
+	totalItemNumber:总记录(商品数)数
+	
+	从数据库中获得的
+	pageNo
+	setList(List<T>)
+	setTotalList()
+}
+
+7.写BaseDAO
+写BaseDAOTest的junit单元测试类
+class under test ->browse

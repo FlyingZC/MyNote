@@ -1,0 +1,129 @@
+1.在AndroidManifest.xml中
+开头声明了包名
+... package="org.crazyit.app" >
+所以类名可以简写
+<activity android:name=".MainActivity"
+android:label="@string/app_name">
+	<!-- 指定该Activity是程序的入口 -->
+	<intent-filter>
+		<action android:name="android.intent.action.MAIN" />
+		启动
+		<category android:name="android.intent.category.LAUNCHER" />
+	</intent-filter>
+</activity>
+
+2.任务 task 即可以调用多个app的activity
+3.activity状态
+(1)active:可见
+(2)paused:可见 但是不能与用户交互 被其他activity遮住.有一部分可见
+(3)stop:被其他activity覆盖
+(4)killed
+
+3.activity生命周期
+(1)Activity Iaunched
+onCreate(Bundle savedInstanceState):完成ui组件的初始化
+Bundle:是一个Map集合
+
+onStart():启动.呈现.但不能与用户交互
+onResume():可以与用户交互
+
+(2)Activity running
+onPause():
+情景一:当系统启动另外一个activity
+如果有一个优先级更高的一个activity需要内存.且不够.当前
+activity被kill.在此之前把没保存的交互的信息保存起来.
+
+情景2:用户返回本activity 则返回onResume()
+
+onStop():
+当本activity不可见了.
+情景一:用户重新进入本activity
+调用onRestart()
+->onStart()->onResume()...
+
+4.logcat
+filter configuration
+log message:---
+
+5.启动应用
+onCreate->onStart->onResume
+退出到桌面.当你还能看到界面 但是已经不能操作onPause
+退出到桌面 onStop
+再进入界面 onStart->onResume没调onCreate(可能有缓存?)
+
+6.android device monitor
+
+7.
+(1)activity_main.xml
+中的button
+ android:onClick="startActivity2"
+
+(2)MainActivity.java中
+ public void startActivity2(View v)
+ {
+	  Intent intent=new Intent(MainActivity.this,Activity2.class);
+	  startActivity(intent);
+ }
+跳转到另一个Activity
+
+8.Android间传输数据
+Android中不同的Activity可以运行在不同的进程(app)中.此时
+Activity间通信需要借助intent机制来进行消息传递
+--intent通常包括:消息的目的和内容
+Intent用来封装请求其他activity的意图.和进行各程序组件之间通信的
+主要媒介.两个Activity可以把要交换的数据封装成Bundle对象.然后用
+intent鞋带Bundle对象来交换数据
+
+9.Activity间传递数据
+Bundle维护了一个HashMap<String,Object>对象.将数据存储在HashMap中进
+行传递
+
+10.MainActivity中
+public void startActivity2(View v)
+ {
+	  Intent intent=new Intent(MainActivity.this,Activity2.class);
+
+	  String name=tname.getText().toString();
+	  String phone=tphone.getText().toString();
+	  String num=tnum.getText().toString();
+
+	  Bundle bundle=new Bundle();
+	  bundle.putString("sname",name);
+	  bundle.putString("sphone",phone);
+	  bundle.putString("snum",num);
+	  //把Bundle对象放入到Intent对象中进行携带
+	  intent.putExtra("personInfo",bundle);
+	  startActivity(intent);
+ }
+
+Activity2.java中
+//获取Activity1发来的意图
+Intent intent=getIntent();
+//获取Intent中携带的Bundle对象
+Bundle bundle=intent.getBundleExtra("personInfo");
+String name=bundle.getString("sname");
+String phone=bundle.getString("sphone");
+String num=bundle.getString("snum");
+
+tv= (TextView) findViewById(R.id.textView_all);
+tv.setText("name"+name+"\n"+"phone:"+phone+"\n"+"num:"+num);
+
+
+10.类->右键->getter setter
+
+11.Intent携带类的对象信息
+使用serializable序列化接口实现对象序列化后传递
+(1)Person类必须得序列化 
+class Person implements Serializable
+(2)MainActivity中
+Person person=new Person();
+person.id=111;
+person.name="zz";
+person.age=12;
+//实现序列化后。就不会报错
+intent.putExtra("person",person);
+startActivity(intent);
+
+(3)Activity2中
+//获取Intent中携带的Person对象
+Person person= (Person) intent.getSerializableExtra("person");

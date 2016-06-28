@@ -1,0 +1,66 @@
+2016/4/23
+1.document.write("hello");输出到浏览器页面
+2.var name="heh"
+3.var b1=true
+4.var obj=new object() 创建新对象
+5.var date=new date()
+date.getYear();
+date.getMonth();
+date.getDate();日
+date.getHours();
+date.getMinutes();
+date.getSecondes();秒
+
+date.setYear();
+
+6.var pi=Math.PI;
+7.var str1="人生自古";
+//取出0后面三个.人生自
+var str2=str1.substring(0,3);
+
+8.数组对象
+var a=new Array();
+var b=new Array(1,"st",23);
+
+9.函数
+function f(a,b)
+{
+	this.a=a;
+	this.b=b;
+}
+
+var car=new f("heh",2);
+document.write(car.a,car.b);
+
+10.null
+11.undefined未定义
+var a;
+var b=null;
+此时a就为未定义
+
+12.遍历数组
+
+var arr=new Array(1,"22",32);
+for(n in arr)
+{
+	alert(arr[n]);
+}
+
+或者
+for(i=0;i<names.length;i++)
+{
+	
+}
+
+13.
+var message="heh";
+var type=typeof(message);
+
+14.数组末尾添加元素
+var list=new Array();
+list.push("he");
+
+15.window对象
+window.error=
+window.confirm询问框
+window.open打开一个新的浏览器窗口

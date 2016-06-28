@@ -1,0 +1,21 @@
+2016/4/11
+1.Servlet保存值的四种范围
+page
+request
+session
+application
+
+2.jsp页面跳转方式
+(1)客户端跳转  重定向 不同的请求,地址栏有变化
+   超链接<a href=""></a>
+   js  window.location.href='a.html'
+   response.sendRedirect('index.jsp');
+   重定向.当用户发请求到服务器.服务器返回处理类.告诉客户端
+   要访问的地址.客户端自动发送第二次请求.服务器端返回请求
+   页面.
+(2)服务器端跳转 转发 同一次请求.地址栏没有变化
+转发只能在当前应用里转发
+forward(ServletRequest,ServletResponse);
+当用户发送请求.服务器端内部先转发.再返回给客户端
+请求由http://localhost:8080/javaweb328/loginServlet 处理
+当跳转到Index页面地址栏仍然是/loginServlet

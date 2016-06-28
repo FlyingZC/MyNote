@@ -1,0 +1,31 @@
+1.typedef int INTEGER
+2.typedef struct{
+   int month;
+   int day;
+}DATE;
+
+DATE birthday;
+3.typedef int NUM[10];
+NUM n;则n包含10个元素的数组
+
+4.枚举类
+enum day{
+   sunday,monday
+}myDay;
+
+5.
+int col;
+col>=strlen(buf)
+strlen返回的是unsigned int
+强转
+col>=(int)strlen(buf);
+
+6.fgets()
+从文件流中读取一行或指定个数的字符
+char *fgets(char*string,int size,FILE*stream);
+string为字符数组.保存读到的字符
+size为要读取的字符的个数
+stream文件流指针
+
+7.c语言中为bool.java中为boolean
+

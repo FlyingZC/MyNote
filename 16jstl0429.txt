@@ -1,0 +1,156 @@
+2016/4/29
+jstl
+1.
+<div class="container">
+	<div class="row">
+		<div class="col-md-3"></div>
+		<div class="col-md-6">
+			<div class="table-responsive">  
+				<table  border="0" cellspacing="0" cellpadding="0" class="table">  
+					<tbody>
+						<tr class="active">  
+							<td>昵称</td>  
+							<td>${requestScope.userlist[0].nickName}</td>  
+						</tr>  
+						<tr class="success">  
+							<td>真实姓名</td>  
+							<td>${requestScope.userlist[0].trueName}</td>  
+						</tr>  
+						<tr class="active">  
+							<td>个性签名</td>  
+							<td>${requestScope.userlist[0].introduction}</td>
+				
+						</tr>  
+						<tr class="success">  
+							<td>性别</td>  
+							<td>${requestScope.userlist[0].sex}</td>
+				
+						</tr>   
+						<tr class="active">  
+							<td>邮箱</td>  
+							<td>${requestScope.userlist[0].email}</td>
+				
+						</tr>  
+						<tr class="success">  
+							<td>联系电话</td>  
+							<td>${requestScope.userlist[0].mobile}</td>
+				
+						</tr>  
+						<tr class="active">  
+							<td>出生年月</td>  
+							<td>${requestScope.userlist[0].birth}</td>
+				
+						</tr>  
+						<tr class="success">  
+							<td>注册时间</td>  
+							<td>${requestScope.userlist[0].regTime}</td>
+				
+						</tr>   
+						<tr class="active">  
+							<td>用户类型</td>  
+							<td>${requestScope.userlist[1].roleName}</td>
+				   
+						</tr>  
+						<tr class="success">  
+							<td>用户状态</td>  
+							<td>${requestScope.userlist[2].constatusName}</td> 
+						</tr>   
+						
+					</tbody>
+					
+				</table>  
+				
+				<Button type="button" class="btn btn-primary col-md-offset-5" 
+				onclick="userModify()">
+				修改个人信息</Button>
+				
+			</div>        
+		</div>
+		<div class="col-md-3"></div>
+	</div>
+</div>
+
+
+1.userlist是个list.直接用下标遍历里面的元素 userlist里放Person类(有nickName属性..)和role类
+${requestScope.userlist[0].nickName}
+<td>${requestScope.userlist[0].mobile}</td>
+
+<td>${requestScope.userlist[1].roleName}</td>
+
+2.getRequestDispatcher
+request.getRequestDispatcher("/MatchPack/match_total.jsp").forward(request, response);
+前面加/代表当前app的根目录
+
+2.1服务器端的地址
+
+服务器端的相对地址指的是相对于你的web应用的地址，这个地址是在服务器端解析的（不同于html
+和javascript中的相对地址，他们是由客户端浏览器解析的）也就是说这时候在jsp和servlet中的相
+对地址应该是相对于你的web应用，即相对于http: //192.168.0.1/webapp/的。
+
+其用到的地方有：
+forward：servlet 中的request.getRequestDispatcher(address);这个address是在服务器端解析 的，
+所以，你要forward到a.jsp应该这么写：request.getRequestDispatcher(“/user/a.jsp”)这个/ 相对于
+当前的web应用webapp，其绝对地址就是：http://192.168.0.1/webapp/user/a.jsp。 sendRedirect：
+在jsp中
+
+3.对List<Map<String,Object>>的遍历
+<c:forEach items="${requestScope.matchList}" var="listin" varStatus="vs">
+	<tr>
+		<td>${vs.count}</td>
+		<td>${listin.college_name }</td>
+		<td>${listin.cnt }</td>
+	</tr>
+</c:forEach>
+
+4.九九乘法表
+<c:forEach begin="1" end="9" step="1" var="m" varStatus="vs">
+	<c:forEach begin="1" end="${9-m+1}" step="1" var="n" varStatus="vs2">
+		<c:set var="ssum" value="${m*n}"></c:set>
+		<c:if test="${ssum<10}">
+			${m} * ${n} = &nbsp; ${m*n} &nbsp;&nbsp;&nbsp;
+		</c:if>
+		<c:if test="${ssum>=10}">
+			${m} * ${n} =  ${m*n} &nbsp;&nbsp;&nbsp;
+		</c:if>
+
+	</c:forEach>
+	<br/>	
+</c:forEach>
+
+5.
+默认从page,request,session,application里查找
+找不到返回""不是null
+如果查不到对象.用普通方法i.get()会报异常
+jstl不报异常
+
+${user.address.city}
+${user.list[0]}访问有序集合某个位置的元素
+${map.key}返回map集合中指定的key的值
+
+3.el执行运算
+${5==5}或${5 eq 5}返回true
+${5!=5}或${5 ne 5}返回false
+${3<5}
+lt gt le ge
+
+4.
+<c:test=""
+
+<c:choose>
+	<c:when></c:when>
+	<c:otherwise></c:otherwise>
+</c:choose>
+
+5.jstl的jar包里的
+meta-inf *.tld tag library description标签库描述文件
+用的最多c.tld fmt.tld
+<tag>
+	<short-name>比如c</short-name>
+	<uri>在页面中需要导入的地址</uri>
+</tag>
+
+ctrl+f:eclipse中搜索
+标签库文件有具体的java处理类
+
+${pminfo.college_name}Map中的键值是列名
+${pminfo.stu_sex==1?'男':'女'}列名类型和当前列数据类型相同

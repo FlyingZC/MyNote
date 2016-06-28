@@ -1,0 +1,78 @@
+2016/6/20
+1.注意js中null与""的区别
+文本框默认没有字符时是""
+$("input").val()=="";
+
+2.使用ScalarHandler注意返回的是结果集中某一列的值.使用别名的位置(注意
+看查询结果的列明是不是一致)
+String sql="select count(*) as totalRows from student  where 
+class_id=?";
+Long rows=runner.query(sql,new 
+ScalarHandler<Long>("totalRows"),classId);
+
+3.使用BeanListHandler
+sql="select * from student where class_id=? limit ?,?";
+//查询结果是一个List里放对象
+List<Student> _data = runner.query(sql, new 
+BeanListHandler<Student>(Student.class),classId,start,pageSize);
+//作为PageBean的data属性
+pageBean.setData(_data);
+
+4.使用Button里添加链接a
+//点击按钮
+$("#btn_search").click(function(){
+	if($("#stu_num").val()==""){
+	//跳转到链接
+		window.location.href="studentServlet?method=findAllStudent&classId
+		="+$("#banji").val(); 
+	}
+});//End $
+
+5.使用jquery动态修改a链接
+$("#btn_search 
+a").attr("href","studentServlet?method=findAllStudent&classId="+$("#banj
+i").val());
+
+6.注意数据类型的值大小范围
+int
+在表中设计时超出Int范围发现数值不对.改为bigint
+
+在java中查询出来的结果数据类型int不够接收.改为long
+
+7.使用Hbuilder写前端.有提示.代码format
+
+8.使用jstl添加<%@ taglib prefix="c" 
+uri="http://java.sun.com/jsp/jstl/core" %>
+
+9.c:forEach 和 c:if结合使用
+<c:forEach items="${requestScope.pageBean.data}" var="student" 
+varStatus="i">
+	<tr>
+		<td>${i.count}</td>
+		<td>${student.stu_num}</td>
+		<td>${student.stu_name}</td>
+		<td>${student.stu_sex}</td>
+		
+		<td>
+		<c:forEach items="${requestScope.classList}" var="banJi">	
+		//注意c:if的判断
+			<c:if 
+			test="${banJi.class_id==student.class_id}">${banJi.class_name}<
+			/c:if>
+		</c:forEach>
+		</td>
+		<td>${student.stu_phone}</td>
+	</tr>
+</c:forEach>
+
+10.bootstrap
+//标签和文本框在一行
+<form role="form" class="form-horizontal">
+//每一个文本框为一个form-group
+	<div class="form-group">
+	//通过col-md-2 text-right两个类同时控制文字位置
+		<label for="name" class="col-md-2 text-right">姓名</label>
+		<div class="col-md-10">
+			<input type="text" class="form-control" id="firstname" 
+				placeholder="请输入名字">
+		</div>

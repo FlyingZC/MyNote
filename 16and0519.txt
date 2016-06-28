@@ -1,0 +1,24 @@
+2016/5/19
+1.
+btn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				 Intent intent=new Intent(Activity2.this,MainActivity.class);
+				 //startActivity(intent);
+				 //int requestCode:请求码
+				 startActivityForResult(intent,0);
+			}
+	  });
+	 
+调用btn.setOnClickListener();方法.该方法接收OnClickListener 类型的参数
+所以使用匿名内部类new OnClickListener(){} 创建一个OnClickListener类的(匿名)
+对象
+
+public interface OnClickListener {
+        /**
+         * Called when a view has been clicked.
+         *
+         * @param v The view that was clicked.
+         */
+        void onClick(View v);
+    }

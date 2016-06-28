@@ -1,0 +1,170 @@
+2016/4/13
+数据源
+数据源里可以放连接池
+DataSource对象可以由服务器提供,前提是在服务器配置
+DataSource(包括连接池)
+
+使用JNDI(java命名和目录接口 java naming and directory 
+interface)来获取DataSource对象的引用javax.naming包中提供了
+Context接口用于查找JNDI命名对象
+连接池
+将一些jdbc connection对象,像水池一般积蓄起来.需要时拿出来
+使用.不需要即创建
+
+2.传统.每次都要建立与数据库的物理连接
+3.jndi  通过名称访问对象
+4.使用tomcat的连接池
+context.xml:访问数据库的配置文件 在meta-inf下
+
+5.右上角 田 ->DataBase Connections->右击 new->new driver 
+mysql 5.0
+DataBase uscdl
+url jdbc:mysql://10.10.11.102:3306/uscdl
+10.10.11.2
+user name : javaweb
+password : test
+ test connection
+ ping succeeded!
+ 1433
+
+ 6.college 高校名称
+stu_info:学生信息
+stu_pctutor:报名情况
+
+7.eclipse中使用数据源 
+web->meta-inf 下Context.xml配置
+<2>赋值DataSorceHelper.java
+
+c3p0数据源
+
+tomcat下有DBCP 
+
+Package dbutils
+下QueryRunner:执行sql查询
+
+2016/4/18
+1.项目->property->
+
+2.配置数据源
+(1)webRoot->context.xml(配置Resource标签)
+username=test
+password=test
+10.10.11.2
+数据库名uscdl
+(2)src->com.web.util->DataSourceHelper.java
+(2)DBUtil
+
+(3)QueryRunner()
+[1]update(String sql,Object param)返回Int(成功几条)
+[2]<T>T query() 
+interface ResultSetHandler<T>:自定义返回集
+里的方法handle(ResultSet)
+实现类MapHandler将查询结果转换成Map结构college_id:1,college_name:徐州工程...
+实现类MapListHandler将每一行转换为Map的List数组
+key对应字段名.
+实现类BeanHandler:转换为Bean
+Map容易转换为json
+
+在函数上按ctrl
+attach->关联源码->conmondbutils->commons-dbutils-sources.jar
+
+ctrl+t:实现该接口的类
+public Map<String,Object> toMap(Result rs) throws SQLException
+{
+	Map<String,Object> result..
+	ResultSetMeatData ramd
+	int cols
+	for(int i=1;i<cols;i++){
+	String columnNam//列名.字段名
+	resultSet.put(columnName,rs.getObject(i));//转成Map	
+	}
+}
+
+3.DB操作的步骤
+
+(1)dao-数据访问对象.接口层.声明要做什么
+(2)dao实现层
+(3)service层(_略
+(4)控制器层--servlet类
+接收.调用.转发到相应的jsp视图
+
+4.由于转发不会改变
+相对路径.绝对路径.
+最后采用绝对地址处理
+
+
+2016/4/20
+Mvc设计模式
+view->controller->service->dao
+
+lib下fastjson.jar
+将对象转换为json格式.是一个javascript对象的表示
+{"id":1}
+在 MatchServlet.java中
+private void matchTotalMobile()
+
+index页面
+<a href="matchServlet?action=web">大赛报名情况统计查询</a>
+区分请求方式
+
+项目名即为项目的上下文WebContext
+重要!!!相对路径.绝对路径
+在tomcat下
+webapps
+|--WebContext(javaweb0413)
+	|--committe
+		|--matchtotal.jsp
+	|--index.jsp
+	|--matchServlet(映射)urlpattern(/matchServlet)
+
+如果在一个页面中bootstrap/heh
+即bootstrap与当前页面同级
+
+如果在一个页面中../bootstrap/hehe
+即bootstrap为当前页面的上一级../下的bootstrap目录
+
+采用绝对路径解决.所有资源从webContext(javaweb0418)开始定位
+
+<link href="javaweb0413/bootstrap/hehe">
+
+在jsp页面中采用脚本获取绝对路径
+<%
+	//当前web的上下文.即javaweb0413
+	String path=request.getContextPath();
+	String basePath=request.getScheme()+":"
+%>
+
+
+
+webroot->committe->matchtotal.jsp
+<%
+	String path=request.getContextPath();
+%>
+
+<link href="<%=path %>/bootstrap3/css/bootstrap.min.css" rel="stylesheet"> 
+
+当把servlet的urlPatterns改为{"/committe/matchServlet"}
+webapps
+|--WebContext(javaweb0413)
+	|--committe
+		|--matchtotal.jsp
+		|--matchServlet(映射)urlpatterns(/committe/matchServlet)
+	|--index.jsp
+如果url-pattern修改了.那么转发路径也应该改变
+
+2016/4/20
+序号 学号id(外键) 指导老师编号(外键) 竞赛类型
+pc_id pc_stuid     pc_tutorid				pc_matchtype
+17    1f232323-...  17						Java
+
+sut_info学生信息
+sut_id sut_name
+
+为了公平.把座位按照学校岔开
+
+stu_institute
+insti_id insti_collegeid	insti_id		 insti_department 
+学校     学院              学号			 学生编号(ID)外键
+
+院校信息
+college

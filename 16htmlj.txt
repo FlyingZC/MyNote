@@ -1,0 +1,529 @@
+1.html文档基本格式
+(1)<!doctype>
+(2)<html>根标记.根元素</html>
+(3)<head>标题(百度一下你就知道)
+	<title></title>
+	<meta></meta>
+	<link></link>
+</head>
+(4)select:下拉框
+(5)
+<div> 可定义文档中的分区或节（division/section）。
+<div> 标签可以把文档分割为独立的、不同的部分。它可以用作严格的组织工具，并且不使用任何格式与其关联。
+如果用 id 或 class 来标记 <div>，那么该标签的作用会变得更加有效。
+<div> 是一个块级元素。这意味着它的内容自动地开始一个新行。实际上，换行是 <div> 固有的唯一格式表现。可以通过 <div> 的 class 或 id 应用额外的样式。
+(6)html dom树:文档树
+(7)Firebug 为你的 Firefox 集成了浏览网页的同时随手可得的丰富开发工具。你可以对任何网页的 CSS、HTML 和 JavaScript 进行实时编辑、调试和监控。\n\n访问 Firebug 网站来查看文档、截屏以及讨论组（英语）：
+在火狐中按f12打开firebug
+
+
+2016/3/10
+如何使用样式
+当浏览器读到一个样式表，它就会按照这个样式表来对文档进行格式化。有以下三种方式来插入样式表：
+外部样式表
+当样式需要被应用到很多页面的时候，外部样式表将是理想的选择。使用外部样式表，你就可以通过更改一个文件来改变整个站点的外观。
+<head>
+<link rel="stylesheet" type="text/css" href="mystyle.css">
+</head>
+内部样式表
+当单个文件需要特别样式时，就可以使用内部样式表。你可以在 head 部分通过 <style> 标签定义内部样式表。
+<head>
+
+<style type="text/css">
+body {background-color: red}
+p {margin-left: 20px}
+</style>
+</head>
+内联样式
+当特殊的样式需要应用到个别元素时，就可以使用内联样式。 使用内联样式的方法是在相关的标签中使用样式属性。样式属性可以包含任何 CSS 属性。以下实例显示出如何改变段落的颜色和左外边距。
+<p style="color: red; margin-left: 20px">
+This is a paragraph
+</p>
+
+
+HTML 超链接（链接）
+超链接可以是一个字，一个词，或者一组词，也可以是一幅图像，您可以点击这些内容来跳转到新的文档或者当前文档中的某个部分。
+当您把鼠标指针移动到网页中的某个链接上时，箭头会变为一只小手。
+我们通过使用 <a> 标签在 HTML 中创建链接。
+有两种使用 <a> 标签的方式：
+通过使用 href 属性 - 创建指向另一个文档的链接
+通过使用 name 属性 - 创建文档内的书签
+<a href="http://www.w3school.com.cn/">Visit W3School</a>
+HTML 链接 - target 属性
+使用 Target 属性，你可以定义被链接的文档在何处显示。
+下面的这行会在新窗口打开文档：
+<a href="http://www.w3school.com.cn/" target="_blank">Visit W3School!</a>
+
+HTML 链接 - name 属性
+name 属性规定锚（anchor）的名称。
+您可以使用 name 属性创建 HTML 页面中的书签。
+书签不会以任何特殊方式显示，它对读者是不可见的。
+当使用命名锚（named anchors）时，我们可以创建直接跳至该命名锚（比如页面中某个小节）的链接，这样使用者就无需不停地滚动页面来寻找他们需要的信息了。
+
+首先，我们在 HTML 文档中对锚进行命名（创建一个书签）：
+<a name="tips">基本的注意事项 - 有用的提示</a>
+然后，我们在同一个文档中创建指向该锚的链接：
+<a href="#tips">有用的提示</a>
+您也可以在其他页面中创建指向该锚的链接：
+<a href="http://www.w3school.com.cn/html/html_links.asp#tips">有用的提示</a>
+
+图像标签（<img>）和源属性（Src）
+在 HTML 中，图像由 <img> 标签定义。
+<img> 是空标签，意思是说，它只包含属性，并且没有闭合标签。
+要在页面上显示图像，你需要使用源属性（src）。src 指 "source"。源属性的值是图像的 URL 地址。
+定义图像的语法是：
+<img src="url" />
+
+表格
+表格由 <table> 标签来定义。每个表格均有若干行（由 <tr> 标签定义），每行被分割为若干单元格（由 <td> 标签定义）。字母 td 指表格数据（table data），即数据单元格的内容。数据单元格可以包含文本、图片、列表、段落、表单、水平线、表格等等。
+<table border="1">
+<tr>
+<td>row 1, cell 1</td>
+<td>row 1, cell 2</td>
+</tr>
+<tr>
+<td>row 2, cell 1</td>
+<td>row 2, cell 2</td>
+</tr>
+</table>
+
+表格的表头
+表格的表头使用 <th> 标签进行定义。
+大多数浏览器会把表头显示为粗体居中的文本：
+<table border="1">
+<tr>
+<th>Heading</th>
+<th>Another Heading</th>
+</tr>
+<tr>
+<td>row 1, cell 1</td>
+<td>row 1, cell 2</td>
+</tr>
+<tr>
+<td>row 2, cell 1</td>
+<td>row 2, cell 2</td>
+</tr>
+</table>
+
+
+HTML 列表
+无序列表
+无序列表是一个项目的列表，此列项目使用粗体圆点（典型的小黑圆圈）进行标记。
+无序列表始于 <ul> 标签。每个列表项始于 <li>。
+<ul>
+<li>Coffee</li>
+<li>Milk</li>
+</ul>
+浏览器显示如下：
+Coffee
+Milk
+列表项内部可以使用段落、换行符、图片、链接以及其他列表等等。
+有序列表
+同样，有序列表也是一列项目，列表项目使用数字进行标记。
+有序列表始于 <ol> 标签。每个列表项始于 <li> 标签。
+<ol>
+<li>Coffee</li>
+<li>Milk</li>
+</ol>
+浏览器显示如下：
+Coffee
+Milk
+列表项内部可以使用段落、换行符、图片、链接以及其他列表等等。
+定义列表
+自定义列表不仅仅是一列项目，而是项目及其注释的组合。
+自定义列表以 <dl> 标签开始。每个自定义列表项以 <dt> 开始。每个自定义列表项的定义以 <dd> 开始。
+<dl>
+<dt>Coffee</dt>
+<dd>Black hot drink</dd>
+<dt>Milk</dt>
+<dd>White cold drink</dd>
+</dl>
+浏览器显示如下：
+Coffee
+Black hot drink
+Milk
+White cold drink
+定义列表的列表项内部可以使用段落、换行符、图片、链接以及其他列表等等。
+
+
+HTML <div> 和 <span>
+可以通过 <div> 和 <span> 将 HTML 元素组合起来。
+HTML 块元素
+大多数 HTML 元素被定义为块级元素或内联元素。
+编者注：“块级元素”译为 block level element，“内联元素”译为 inline element。
+块级元素在浏览器显示时，通常会以新行来开始（和结束）。
+例子：<h1>, <p>, <ul>, <table>
+HTML 内联元素
+内联元素在显示时通常不会以新行开始。
+例子：<b>, <td>, <a>, <img>
+HTML <div> 元素
+HTML <div> 元素是块级元素，它是可用于组合其他 HTML 元素的容器。
+<div> 元素没有特定的含义。除此之外，由于它属于块级元素，浏览器会在其前后显示折行。
+如果与 CSS 一同使用，<div> 元素可用于对大的内容块设置样式属性。
+<div> 元素的另一个常见的用途是文档布局。它取代了使用表格定义布局的老式方法。使用 <table> 元素进行文档布局不是表格的正确用法。<table> 元素的作用是显示表格化的数据。
+HTML <span> 元素
+HTML <span> 元素是内联元素，可用作文本的容器。
+<span> 元素也没有特定的含义。
+当与 CSS 一同使用时，<span> 元素可用于为部分文本设置样式属性。
+div里为绿色
+<div style="color:#00FF00">
+  <h3>This is a header</h3>
+  <p>This is a paragraph.</p>
+</div>
+
+<div class="news">
+  <h2>News headline 1</h2>
+  <p>some text. some text. some text...</p>
+  ...
+ </div>
+
+ <div class="news">
+  <h2>News headline 2</h2>
+  <p>some text. some text. some text...</p>
+  ...
+ </div>
+
+ <p class="tip"><span>提示：</span>... ... ...</p>
+CSS:
+p.tip span {
+	font-weight:bold;
+	color:#ff9955;
+	}
+
+
+HTML 布局
+使用 <div> 元素的网页布局
+<!DOCTYPE html>
+<html>
+<head>
+<style type="text/css">
+div#container{width:500px}
+div#header {background-color:#99bbbb;}
+div#menu {background-color:#ffff99;height:200px;width:150px;float:left;}
+div#content {background-color:#EEEEEE;height:200px;width:350px;float:left;}
+div#footer {background-color:#99bbbb;clear:both;text-align:center;}
+h1 {margin-bottom:0;}
+h2 {margin-bottom:0;font-size:18px;}
+ul {margin:0;}
+li {list-style:none;}
+</style>
+</head>
+
+<body>
+
+<div id="container">
+
+<div id="header">
+<h1>Main Title of Web Page</h1>
+</div>
+
+<div id="menu">
+<h2>Menu</h2>
+<ul>
+<li>HTML</li>
+<li>CSS</li>
+<li>JavaScript</li>
+</ul>
+</div>
+
+<div id="content">Content goes here</div>
+
+<div id="footer">Copyright W3School.com.cn</div>
+
+</div>
+
+</body>
+</html>
+
+使用 <table> 元素的网页布局
+<!DOCTYPE html>
+<html>
+<body>
+
+<table width="500" border="0">
+<tr>
+<td colspan="2" style="background-color:#99bbbb;">
+<h1>Main Title of Web Page</h1>
+</td>
+</tr>
+
+<tr valign="top">
+<td style="background-color:#ffff99;width:100px;text-align:top;">
+<b>Menu</b><br />
+HTML<br />
+CSS<br />
+JavaScript
+</td>
+<td style="background-color:#EEEEEE;height:200px;width:400px;text-align:top;">
+Content goes here</td>
+</tr>
+
+<tr>
+<td colspan="2" style="background-color:#99bbbb;text-align:center;">
+Copyright W3School.com.cn</td>
+</tr>
+</table>
+
+</body>
+</html>
+
+
+HTML 表单和输入
+表单
+表单是一个包含表单元素的区域。
+表单元素是允许用户在表单中（比如：文本域、下拉列表、单选框、复选框等等）输入信息的元素。
+表单使用表单标签（<form>）定义。
+<form>
+...
+  input 元素
+...
+</form>
+
+输入
+多数情况下被用到的表单标签是输入标签（<input>）。输入类型是由类型属性（type）定义的。大多数经常被用到的输入类型如下：
+文本域（Text Fields）
+当用户要在表单中键入字母、数字等内容时，就会用到文本域。
+<form>
+First name: 
+<input type="text" name="firstname" />
+<br />
+Last name: 
+<input type="text" name="lastname" />
+</form>
+
+单选按钮（Radio Buttons）
+<input type="radio" name="sex" value="male" /> Male
+
+复选框（Checkboxes）
+<form>
+<input type="checkbox" name="bike" />
+I have a bike
+<br />
+<input type="checkbox" name="car" />
+I have a car
+</form>
+
+表单的动作属性（Action）和确认按钮
+当用户单击确认按钮时，表单的内容会被传送到另一个文件。表单的动作属性定义了目的文件的文件名。由动作属性定义的这个文件通常会对接收到的输入数据进行相关的处理。
+<form name="input" action="html_form_action.asp" method="get">
+Username: 
+<input type="text" name="user" />
+<input type="submit" value="Submit" />
+</form>
+
+下拉框
+<form>
+<select name="cars">
+<option value="volvo">Volvo</option>
+<option value="saab">Saab</option>
+<option value="fiat">Fiat</option>
+<option value="audi">Audi</option>
+</select>
+</form>
+
+带有预选值的下拉框
+<form>
+<select name="cars">
+<option value="volvo">Volvo</option>
+<option value="saab">Saab</option>
+<option value="fiat" selected="selected">Fiat</option>
+<option value="audi">Audi</option>
+</select>
+</form>
+
+文本域
+<textarea rows="10" cols="30">
+后面的话默认显示在文本域中
+
+按钮
+<input type="button" value="按钮上的默认文本">
+
+带标题的表单
+<form>
+  <fieldset>
+    <legend>健康信息</legend>
+    身高：<input type="text" />
+    体重：<input type="text" />
+  </fieldset>
+</form>
+
+<form action="/example/html/form_action.asp" method="get">
+  <p>First name: <input type="text" name="fname" /></p>
+  <p>Last name: <input type="text" name="lname" /></p>
+  <input type="submit" value="Submit" />
+</form>
+
+<p>请单击确认按钮，输入会发送到服务器上名为 "form_action.asp" 的页面。</p>
+
+HTML 框架
+通过使用框架，你可以在同一个浏览器窗口中显示不止一个页面。
+垂直框架
+<html>
+将一个网页分为三大块
+<frameset cols="25%,50%,25%">
+
+  <frame src="/example/html/frame_a.html">
+  <frame src="/example/html/frame_b.html">
+  <frame src="/example/html/frame_c.html">
+
+</frameset>
+
+</html>
+水平框架
+<html>
+
+<frameset rows="25%,50%,25%">
+
+  <frame src="/example/html/frame_a.html">
+  <frame src="/example/html/frame_b.html">
+  <frame src="/example/html/frame_c.html">
+
+</frameset>
+
+</html>
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <!--字符集为统一字符编码unicode.gbk为国标码-->
+  <!--<meta charset="utf-8">-->
+ </head>
+
+ <body>
+  HTML 标题
+HTML 标题（Heading）是通过 <h1> - <h6> 等标签进行定义的。
+<h1>This is a heading</h1>
+<h2>This is a heading</h2>
+<h3>This is a heading</h3>
+
+HTML 段落
+HTML 段落是通过 <p> 标签进行定义的。
+<p>This is a paragraph.</p>
+<p>This is another paragraph.</p>
+
+HTML 链接
+HTML 链接是通过 <a> 标签进行定义的。
+<a href="http://www.baidu.com">This is a link</a>
+
+HTML 图像
+HTML 图像是通过 <img> 标签进行定义的。
+<img src="w3school.jpg" width="104" height="142" />
+
+HTML 元素
+HTML 文档是由 HTML 元素定义的。
+HTML 元素指的是从开始标签（start tag）到结束标签（end tag）的所有代码。
+
+HTML 属性
+HTML 标签可以拥有属性。属性提供了有关 HTML 元素的更多的信息。
+属性总是以名称/值对的形式出现，比如：name="value"。
+属性总是在 HTML 元素的开始标签中规定。
+属性实例
+HTML 链接由a标签定义。链接的地址在 href 属性中指定：
+<a href="http://www.w3school.com.cn">This is a link</a>
+
+<h1 align="center">一级居中标签</h1>
+
+hr标签在 HTML 页面中创建水平线.横线
+hr 元素可用于分隔内容。
+<p>This is a paragraph</p>
+<hr />
+<p>This is a paragraph</p>
+<hr />
+<p>This is a paragraph</p>
+
+p元素里可以再使用br
+<p>一行<br/>二行</p>
+
+
+
+ </body>
+</html>
+
+
+2016/3/11
+插入脚本
+<html>
+<body>
+<script type="text/javascript">
+document.write("<h1>Hello World!</h1>")
+</script> 
+</body>
+</html>
+
+link> 标签定义文档与外部资源之间的关系。
+<link> 标签最常用于连接样式表：
+<head>
+<link rel="stylesheet" type="text/css" href="mystyle.css" />
+</head>
+
+<style> 标签用于为 HTML 文档定义样式信息。
+您可以在 style 元素内规定 HTML 元素在浏览器中呈现的样式：
+<head>
+<style type="text/css">
+body {background-color:yellow}
+p {color:blue}
+</style>
+</head>
+
+HTML <meta> 元素
+元数据（metadata）是关于数据的信息。
+<meta> 标签提供关于 HTML 文档的元数据。元数据不会显示在页面上，但是对于机器是可读的。
+典型的情况是，meta 元素被用于规定页面的描述、关键词、文档的作者、最后修改时间以及其他元数据。
+<meta> 标签始终位于 head 元素中。
+元数据可用于浏览器（如何显示内容或重新加载页面），搜索引擎（关键词），或其他 web 服务。
+针对搜索引擎的关键词
+一些搜索引擎会利用 meta 元素的 name 和 content 属性来索引您的页面。
+下面的 meta 元素定义页面的描述：
+<meta name="description" content="Free Web tutorials on HTML, CSS, XML" />
+下面的 meta 元素定义页面的关键词：
+<meta name="keywords" content="HTML, CSS, XML" />
+name 和 content 属性的作用是描述页面的内容。
+
+HTML 字符实体
+如需显示小于号，我们必须这样写：&lt; 或 &#60;
+不间断空格（non-breaking space）
+HTML 中的常用字符实体是不间断空格(&nbsp;)。
+浏览器总是会截短 HTML 页面中的空格。如果您在文本中写 10 个空格，在显示该页面之前，浏览器会删除它们中的 9 个。
+
+加空格
+如需在页面中增加空格的数量，您需要使用 &nbsp; 字符实体。
+
+scheme://host.domain:port/path/filename
+解释：
+scheme - 定义因特网服务的类型。最常见的类型是 http
+host - 定义域主机（http 的默认主机是 www）
+domain - 定义因特网域名，比如 w3school.com.cn
+:port - 定义主机上的端口号（http 的默认端口号是 80）
+path - 定义服务器上的路径（如果省略，则文档必须位于网站的根目录中）。
+filename - 定义文档/资源的名称
+编者注：URL 的英文全称是 Uniform Resource Locator，中文也译为“统一资源定位符”。
+
+
+
+XHTML 是以 XML 格式编写的 HTML。
+ 指的是可扩展超文本标记语言
+
+ 
+ <p>heh<br/>hah<br/></p>
+ <h1 align="center">This is heading 1</h1>
+
+2016/3/14
+<textarea cols="30" rows="5">
+领先的 Web 技术教程 - 全部免费
+在w3school，你可以找到你所需要的所有的网站建设教程。
+从基础的HTML到XHTML，乃至进阶的XML、SQL、数据库、多媒体和WAP。
+</textarea>
+
+<form>
+  <fieldset>
+    <legend>健康信息</legend>
+    身高：<input type="text" />
+    体重：<input type="text" />
+  </fieldset>
+</form>

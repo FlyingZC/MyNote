@@ -1,0 +1,45 @@
+FirstServlet
+extends javax.servlet.http.HttpServlet
+
+url-pattern /firstServlet.do
+http://localhost:8080/MyServlet/firstServlet.do
+
+后缀名可以任意写
+超链接.在地址栏打请求 均是get请求
+
+<servlet>
+  	<servlet-name>firstServlet</servlet-name>
+  	<servlet-class>com.zc.javaweb.FirstServlet</servlet-class>
+  	<load-on-startup>1</load-on-startup>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>firstServlet</servlet-name>
+  	<url-pattern>/firstServlet</url-pattern>
+  </servlet-mapping>
+
+  地址栏根据输入的url-pattern.找到对象servlet-name,再找到具体类servlet-class.再看get请求
+
+
+
+
+
+index.jsp中method与action顺序不能颠倒
+<form  method="post" action="firstServlet">
+<input type="submit" value="提交"/>
+</form>
+转向http://localhost:8080/MyServlet/firstServlet
+即FirstServlet
+
+getWriter()
+getOutputStream()
+ISO-8859-1 西文编码
+
+response中文乱码
+
+ * 注解
+ */
+ tomcat新特性
+@WebServlet(name = "loginServlet", urlPatterns = { "/loginServlet" })
+urlPatterns是个数组{}可以给很多个映射
+

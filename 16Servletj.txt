@@ -1,0 +1,63 @@
+1.先在WebContext目录下新建login.html文档
+在地址栏输入login.html才行.访问login.html页面.当点提交页面时.由于form的action为loginHeHe.再看web.xml中LoginServlet与loginServlet页面映射.貌似要三个名字一样.不理解.
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+//action为在web.xml配置中<url-pattern>中的对应
+	<form action="loginServlet" method="post">
+	
+		user: <input type="text" name="user"/>
+		password: <input type="password" name="password"/>
+		
+		<br><br>
+		
+		interesting:
+		<input type="checkbox" name="interesting" value="reading"/>Reading
+		<input type="checkbox" name="interesting" value="game"/>Game
+		<input type="checkbox" name="interesting" value="party"/>Party
+		<input type="checkbox" name="interesting" value="shopping"/>Shopping
+		<input type="checkbox" name="interesting" value="sport"/>Sport
+		<input type="checkbox" name="interesting" value="tv"/>TV
+		
+		<input type="submit" value="Submit"/>
+	
+	</form>
+
+</body>
+</html>
+
+2.新建LoginServlet的java类
+3.在web.xml中进行配置
+<servlet>
+  	<servlet-name>loginServlet</servlet-name>
+  	<servlet-class>com.zc.javaweb.LoginServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>loginServlet</servlet-name>
+  	<url-pattern>/loginServlet</url-pattern>
+  </servlet-mapping>
+
+  4.在LoginServlet中的service方法中
+  可以获取login.html中的结点
+  public void service(ServletRequest request, ServletResponse response)
+			throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		System.out.println("请求来了");
+		System.out.println(request);
+		String user=request.getParameter("yonghu");
+		String password=request.getParameter("mima");
+		System.out.println("用户名为:"+user+" 密码为:"+password);
+		
+		String[] hobbies=request.getParameterValues("hobby");
+		for(String i:hobbies){
+			System.out.println("->"+i);
+		}
+	}
+
+1.Ecllipse找不到HttpServlet这个类
+说明Servlet具体由Tomcat实现的.java里只提供接口
+Eclipse中使用的HttpServlet类之所以识别不到的原因是没有导入Servlet-api.jar包，这个包在所安装在的tomcat的lib文件下，所以只需要导入即可。
+在需要导入的工程上右键进入properties，选择Java build path ，library选项卡中add external jars，选择你所安装tomcat目录下lib文件中的Servlet-api.jar包即可。

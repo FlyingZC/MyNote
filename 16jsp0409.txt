@@ -1,0 +1,232 @@
+2016/4/9
+1.request.getParameter(String name);
+根据参数名获取参数值
+2.request.getParameterValues(String name);
+根据参数名获取参数值数组.比如通过复选框的名字获取所有值
+
+3.jsp自定义标签
+<1>开发自定义标签处理类
+<2>建立一个*.tld文件.每个*.tld文件是一个标签库.每个标签库可包含多个标签.Tag Library Definition.标签库定义
+<3>在jsp文件中使用自定义标签
+
+<1>自定义标签类
+[1]继承javax.servlet.jsp.tagext.SimpleTagSupport
+[2]属性需有getter和setter方法
+[3]重写doTag().用来生成页面内容
+
+<2>标签库文件
+根元素taglib
+<taglib>
+   <tlib-version>1.0</tlib-version>
+      <short-name>mytaglib</short-name>
+		定义标签的uri.标签库唯一标识.jsp页面中使用标签库就根据该uri属性来定位标签库
+		<uri>http://www.zc.com/mytaglib</uri>
+
+		<!-- 定义第一个标签 -->
+		<tag>
+			<!-- 定义标签名 -->
+			<name>helloWorld</name>
+			<!-- 定义标签处理类 -->
+			<tag-class>lee.HelloWorldTag</tag-class>
+			<!-- 定义标签体为空 -->
+			<body-content>empty</body-content>
+		</tag>
+</taglib>
+
+<3>在jsp中使用标签库
+[1]导入标签库:taglib指令
+[2]使用标签
+
+
+4.EL表达式
+Expression Language 原本是	JSTL为方便存取数据所自定义的语言
+<1>表单回写 如果用户名为空 显示空白 不为空 显示用户名
+username:<input  type="text" name="username"
+		value="<%=request.getParameter("username")==null?"":request.getParameter("username") %>"
+		/>
+
+如果使用EL表达式${xx.value}
+username:<input  type="text" name="username" value="${param.username}"/>
+
+<2>在同一个jsp页面.JavaBean一定要有一个空参构造器
+<jsp:useBean id="customer" class="com.zc.javaweb.Customer" scope="session" ></jsp:useBean>
+给customer对象的age属性赋值为12
+<jsp:setProperty property="age" value="12" name="customer"/>
+
+[1]用jsp:getProperty获取属性值(只能当前页面有效)
+<jsp:getProperty property="age" name="customer"/>
+[2]用getAttribute获取属性值
+<%
+	Customer customer2=(Customer)session.getAttribute("customer");
+	out.print(customer2.getAge());
+%>
+[3]用el表达式语言获取属性值
+${sessionScope.customer.age}
+
+<3>
+${sessionScope.customer.age}与${sessionScope.customer["age"]}等价.当有特殊字符时.可能需要第二种
+
+<4>${username}取某一范围内名称为username的变量.先从page开始查找.依次Request,session,application.找到为止.找不到返回null
+
+<5>分为${pageScope.value}
+${requestScope.value}
+${sessionScope.value}
+${application.value}
+
+<6>EL可以进行自动的类型转换
+
+<7>el隐含对象
+[1]范围有关
+applicationScope
+   ${applicationScope.time}相当于<%=application.getAttribute("time")%>
+sessionScope
+requestScope
+pageScope
+[2]与输入有关
+param
+paramValues
+	${paramValues.name[0].class.name}
+	相当于
+	<%=request.getParameterValues("name")[0].getClass().getName%>
+[3]其他隐含对象
+cookie
+   ${cookie.JSESSIONID.name}
+	${cookie.JSESSIONID.value}
+
+
+header:请求头
+headerValues
+initParam
+${initParam.initName}
+pageContext
+
+<8>EL的关系运算符
+${param.psw1==param.psw2}
+${param.score>60?"及格":"不及格"}
+
+5.JSTL JSP标准标签库 JSTL支持EL
+JavaServer Pages Standard Tag Library
+<1>核心标签库
+<2>I18N格式标签库
+<3>...
+<1>核心标签库
+[1]表达式操作
+out,set,remove,catch
+<c:out value="${requestScope.book}"></c:out>
+比el功能强一些.比如能转义
+
+<c:set>用来将变量存储到jsp范围中或是JavaBean的属性中
+<c:set var="name" value="zc" scope="page"></c:set>
+相当于<%pageContext.setAttribute("name","zc");%>
+
+[2]流程控制
+if,choose,when,otherwise
+	if
+	<!-- c:if没有else.但是可以把属性存储起来 -->
+	<c:set var="age" value="2" scope="request"></c:set>
+	<c:if test="${requestScope.age>18}">成年</c:if>
+
+	<c:choose>
+		<c:when test="${param.age<18}">未成年</c:when>
+		<c:when test="${param.age<30}">青年</c:when>
+		<c:when test="${param.age<50 }">中年</c:when>
+		<c:when test="${param.age<80 }">老年</c:when>
+		<c:otherwise>活神仙</c:otherwise>
+	</c:choose>
+
+2016/4/13
+
+[3]迭代操作
+forEach,forTokens
+
+forEach 可以对数组,Collection,Map进行遍历
+forEach里的属性
+	var 存放遍历的每个元素的名字.如List里的每一个
+	items 被迭代的集合对象
+	varStatus 存放现在指到的相关成员信息
+	begin 开始的位置
+	end 结束的位置
+	step 每次迭代的间隔数
+	(1)
+	<c:forEach begin="1" end="10" step="2" var="i">
+	${i}&nbsp
+	</c:forEach>
+	(2)遍历集合
+	<%
+		List<Customer> customers=new ArrayList<Customer>();
+		customers.add(new Customer(1,"zc"));
+		customers.add(new Customer(1,"zz"));
+		customers.add(new Customer(2,"zx"));
+		request.setAttribute("customers",customers);
+	%>
+	对应的Customer类里要有getter和setter方法.可以加begin默认从0开始
+	<c:forEach items="${requestScope.customers}" var="hehe">
+		${hehe.cno}: ${hehe.cname}<br/>
+	</c:forEach>
+
+	<c:forEach items="${sessionScope.customerList}" var="listin" varStatus="id">
+		${id.index}--${id.count}--${listin.cno}<br/>
+	</c:forEach>
+
+	varStatus里包含
+		current当前这次迭代的（集合中的）项
+		index当前这次迭代从 0 开始的迭代索引
+		count当前这次迭代从 1 开始的迭代计数
+		first用来表明当前这轮迭代是否为第一次迭代的标志
+		last用来表明当前这轮迭代是否为最后一次迭代的标志
+		begin属性值
+		end属性值
+		step属性值 
+
+	(3)遍历Map
+	<%
+		Map<String,Object> customersMap=new HashMap<String,Object>();
+		customersMap.put("a",new Customer(1,"zz"));
+		customersMap.put("b",new Customer(1,"zz"));
+		customersMap.put("c",new Customer(1,"zz"));
+		customersMap.put("d",new Customer(1,"zz"));
+		customersMap.put("e",new Customer(1,"zz"));
+		request.setAttribute("customersMap",customersMap);
+		
+	%>
+	
+	<c:forEach var="custsMap" items="${requestScope.customersMap}">
+		${custsMap.key}--${custsMap.value.cno}--${custsMap.value.cname}<br/>
+	</c:forEach>
+
+	(4)遍历数组
+	<%
+	//遍历数组
+	String[] days=new String[]{"a","b","c"};
+	request.setAttribute("days",days);
+	%>
+	<c:forEach var="da" items="${ requestScope.days}">${da}</c:forEach>
+
+	(5)遍历ListMap
+		<c:forEach items="${requestScope.jieGuo}" var="hehe">
+			<c:forEach items="${hehe}" var="mapin">
+				${mapin.key}--${mapin.value}<br/>
+			</c:forEach>
+		</c:forEach>
+		输出.数据库表中每一行作为一个Map.列名为Key(如name,pass).值为value
+		name--hahah pass--1212 
+		name--heha pass--232 
+
+
+	(6)遍历ListMap结果输出到表格中
+	<c:forEach items="${requestScope.jieGuo}" var="listin">
+				<tr>//每一行是里是对每一个Map的遍历.Map里的每一个value输出到<td>中
+					<c:forEach items="${listin}" var="mapin">
+						<td>${mapin.value}</td>
+					</c:forEach>	
+				</tr>
+			</c:forEach>
+[4]url操作
+Import,param,url,param,redirect,param
+<c:import> 可以包含任何页面到当前页面
+<c:redirect> 使当前jsp页面重定向到指定页面
+<c:redirect url="/test.jsp"></c:redirect>斜杠代表当前web应用
+
+<jsp:forward page="/test.jsp"></jsp:forward>斜杠代表tomcat根目录
+
+

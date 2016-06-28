@@ -1,0 +1,37 @@
+dom 文档对象模型
+json
+
+<script type="text/javascript" src="js/....js"/></script>
+
+//当dom文档加载完成后.执行此函数.$
+$(document).ready(function(){
+	alert("ok");
+});
+
+dom对象通过$封装成jQuery对象
+getElementById();
+getElementsByName();//可能会有多个名字相同的组件
+getElementsByTagName();//可能有多个相同的标签
+
+选择器
+1.基本选择器
+$("#id")
+$(".class")
+$("element")
+$("*")
+$("#id,.class")
+
+var value=$("#username").val();
+
+//调用css方法
+$("p").css("background-color","red");
+
+层次选择器
+1.$("body div")
+body所有后代div
+2.$("prev+next")
+3.$("prev~next")
+
+clear 属性的值可以是 left、right、both 或 none，它表示框的
+哪些边不应该挨着浮动框。
+

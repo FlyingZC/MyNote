@@ -1,0 +1,283 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>商品列表</title>
+		<!--引入外部css文件.外部样式表.内部样式表.内联样式表        -->
+		<link rel="stylesheet" href="css/productlist.css" />
+	</head>
+	<body>
+		<div id="mall_body">
+			<div class="zxtj">
+				<img src="images/zxtj_title.gif" />
+			</div>
+			<!--商品搜索导航    -->
+			<!--div为块级元素.span行内元素-->
+			<div class="search_navigation">
+				商品类别:
+				<select>
+					<optgroup label="照相机">
+						<option>佳能</option>
+						<option>尼康</option>
+						
+					</optgroup>
+				</select>
+				
+				商品价格区间:
+				<input size="6" type="text" />-<input size="6" type="text" />
+				<input type="button" value="搜索"/>
+			
+			</div>
+			
+			<!--商品列表-->
+			<div class="mall_product_list">
+				<!--显示每个商品信息-->
+				<div class="mall_product_info">
+					<div class="mall_product_pic">
+						<a href="http://www.baidu.com">
+							<img src="images/camera/canon/canon0001.jpg"/>
+						</a>	
+					</div>
+					<!--每个商品的名称-->
+					<div class="mall_product_name" style="height: 30px;"
+						<a href="">诺基亚手机</a>
+					</div>
+					<!--每个商品的价格-->
+					<div class="mall_product_price">
+						<div>
+							市场价:
+							<span class="deleteprice">1000</span>						
+						</div>
+						<div>
+							优惠价:
+							<span class="lowprice">998</span>
+						</div>
+						
+					</div>
+					
+					<div>
+						<img src="images/but_buy.gif"/>
+						<img src="images/bookz_save.gif" />
+					</div>
+				</div>
+				
+				<!--显示每个商品信息-->
+				<div class="mall_product_info">
+					2
+				</div>
+				
+				<!--显示每个商品信息-->
+				<div class="mall_product_info">
+					<div class="mall_product_pic">
+						<a href="http://www.baidu.com">
+							<img src="images/camera/canon/canon0001.jpg"/>
+						</a>	
+					</div>
+					<!--每个商品的名称-->
+					<div class="mall_product_name" style="height: 30px;"
+						<a href="">诺基亚手机</a>
+					</div>
+					<!--每个商品的价格-->
+					<div class="mall_product_price">
+						<div>
+							市场价:
+							<span class="deleteprice">1000</span>						
+						</div>
+						<div>
+							优惠价:
+							<span class="lowprice">998</span>
+						</div>
+						
+					</div>
+					
+					<div>
+						<img src="images/but_buy.gif"/>
+						<img src="images/bookz_save.gif" />
+					</div>
+				</div>
+				
+				<!--显示每个商品信息-->
+				<div class="mall_product_info">
+					<div class="mall_product_pic">
+						<a href="http://www.baidu.com">
+							<img src="images/camera/canon/canon0001.jpg"/>
+						</a>	
+					</div>
+					<!--每个商品的名称-->
+					<div class="mall_product_name" style="height: 30px;"
+						<a href="">诺基亚手机</a>
+					</div>
+					<!--每个商品的价格-->
+					<div class="mall_product_price">
+						<div>
+							市场价:
+							<span class="deleteprice">1000</span>						
+						</div>
+						<div>
+							优惠价:
+							<span class="lowprice">998</span>
+						</div>
+						
+					</div>
+					
+					<div>
+						<img src="images/but_buy.gif"/>
+						<img src="images/bookz_save.gif" />
+					</div>
+				</div>
+				
+				<!--显示每个商品信息-->
+				<div class="mall_product_info">
+					<div class="mall_product_pic">
+						<a href="http://www.baidu.com">
+							<img src="images/camera/canon/canon0001.jpg"/>
+						</a>	
+					</div>
+					<!--每个商品的名称-->
+					<div class="mall_product_name" style="height: 30px;"
+						<a href="">诺基亚手机</a>
+					</div>
+					<!--每个商品的价格-->
+					<div class="mall_product_price">
+						<div>
+							市场价:
+							<span class="deleteprice">1000</span>						
+						</div>
+						<div>
+							优惠价:
+							<span class="lowprice">998</span>
+						</div>
+						
+					</div>
+					
+					<div>
+						<img src="images/but_buy.gif"/>
+						<img src="images/bookz_save.gif" />
+					</div>
+				</div>
+				
+				<!--显示每个商品信息-->
+				<div class="mall_product_info">
+					<div class="mall_product_pic">
+						<a href="http://www.baidu.com">
+							<img src="images/camera/canon/canon0001.jpg"/>
+						</a>	
+					</div>
+					<!--每个商品的名称-->
+					<div class="mall_product_name" style="height: 30px;"
+						<a href="">诺基亚手机</a>
+					</div>
+					<!--每个商品的价格-->
+					<div class="mall_product_price">
+						<div>
+							市场价:
+							<span class="deleteprice">1000</span>						
+						</div>
+						<div>
+							优惠价:
+							<span class="lowprice">998</span>
+						</div>
+						
+					</div>
+					
+					<div>
+						<img src="images/but_buy.gif"/>
+						<img src="images/bookz_save.gif" />
+					</div>
+				</div>
+				
+				<!--显示每个商品信息-->
+				<div class="mall_product_info">
+					<div class="mall_product_pic">
+						<a href="http://www.baidu.com">
+							<img src="images/camera/canon/canon0001.jpg"/>
+						</a>	
+					</div>
+					<!--每个商品的名称-->
+					<div class="mall_product_name" style="height: 30px;"
+						<a href="">诺基亚手机</a>
+					</div>
+					<!--每个商品的价格-->
+					<div class="mall_product_price">
+						<div>
+							市场价:
+							<span class="deleteprice">1000</span>						
+						</div>
+						<div>
+							优惠价:
+							<span class="lowprice">998</span>
+						</div>
+						
+					</div>
+					
+					<div>
+						<img src="images/but_buy.gif"/>
+						<img src="images/bookz_save.gif" />
+					</div>
+				</div>
+				
+				<!--显示每个商品信息-->
+				<div class="mall_product_info">
+					<div class="mall_product_pic">
+						<a href="http://www.baidu.com">
+							<img src="images/camera/canon/canon0001.jpg"/>
+						</a>	
+					</div>
+					<!--每个商品的名称-->
+					<div class="mall_product_name" style="height: 30px;"
+						<a href="">诺基亚手机</a>
+					</div>
+					<!--每个商品的价格-->
+					<div class="mall_product_price">
+						<div>
+							市场价:
+							<span class="deleteprice">1000</span>						
+						</div>
+						<div>
+							优惠价:
+							<span class="lowprice">998</span>
+						</div>
+						
+					</div>
+					
+					<div>
+						<img src="images/but_buy.gif"/>
+						<img src="images/bookz_save.gif" />
+					</div>
+				</div>
+				
+				<!--显示每个商品信息-->
+				<div class="mall_product_info">
+					<div class="mall_product_pic">
+						<a href="http://www.baidu.com">
+							<img src="images/camera/canon/canon0001.jpg"/>
+						</a>	
+					</div>
+					<!--每个商品的名称-->
+					<div class="mall_product_name" style="height: 30px;"
+						<a href="">诺基亚手机</a>
+					</div>
+					<!--每个商品的价格-->
+					<div class="mall_product_price">
+						<div>
+							市场价:
+							<span class="deleteprice">1000</span>						
+						</div>
+						<div>
+							优惠价:
+							<span class="lowprice">998</span>
+						</div>
+						
+					</div>
+					
+					<div>
+						<img src="images/but_buy.gif"/>
+						<img src="images/bookz_save.gif" />
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

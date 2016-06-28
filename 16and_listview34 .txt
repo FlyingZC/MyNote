@@ -1,0 +1,201 @@
+package com.example.ml.xzattraction;
+
+import android.os.Message;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.logging.Handler;
+
+public class MainActivity1 extends AppCompatActivity implements AbsListView.OnScrollListener{
+    private ListView lv;
+    private int[] images=new int[]{R.drawable.xz01,R.drawable.xz02,R.drawable.xz03,R.drawable.xz04,R.drawable.xz05,
+            R.drawable.xz06,R.drawable.xz07,R.drawable.xz08,R.drawable.xz09,R.drawable.xz10,R.drawable.xz11,
+            R.drawable.xz12,R.drawable.xz13,R.drawable.xz14,R.drawable.xz15,R.drawable.xz16};
+    private ArrayList<Attraction> attractions=new ArrayList<Attraction>();
+    int index=1;
+    MyAdapter adapter;
+    private void loaddata(){
+        for (int i=0;i<8;i++){
+            Attraction attraction=new Attraction();
+            attraction.image=images[index-1];
+            attraction.title="XuZhou Attration spot "+index;
+            index++;
+            attractions.add(attraction);
+        }
+
+    }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.listlayout);
+        lv= (ListView) findViewById(R.id.listView);
+        LinearLayout footlayout= (LinearLayout) getLayoutInflater().inflate(R.layout.pagefootitem,null);
+        lv.addFooterView(footlayout);
+        lv.setOnScrollListener(this);
+        loaddata();
+      adapter=new MyAdapter();
+        lv.setAdapter(adapter);
+    }
+
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+    System.out.println("----scrollState"+scrollState);
+        if ((lastvisibleindex == adapter.getCount()) &&scrollState== AbsListView.OnScrollListener.SCROLL_STATE_IDLE)
+        {
+           new loaddataThread().start();
+        }
+    }
+       int lastvisibleindex;
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+        System.out.println("----firstVisibleItem"+firstVisibleItem);
+        System.out.println("----visibleItemCount"+ visibleItemCount);
+        System.out.println("----totalItemCount"+totalItemCount);
+        lastvisibleindex=firstVisibleItem+visibleItemCount-1;
+    }
+
+    public class MyAdapter extends BaseAdapter {
+
+        @Override
+        public int getCount() {
+            return attractions.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return attractions.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHoder vh;
+            if (convertView == null) {
+                convertView = getLayoutInflater().inflate(R.layout.listitem, null);
+
+                convertView = getLayoutInflater().inflate(R.layout.listitem, null);
+                vh = new ViewHoder();
+                vh.iv = (ImageView) convertView.findViewById(R.id.imageview01);
+                vh.tv = (TextView) convertView.findViewById(R.id.textview01);
+                convertView.setTag(vh);
+            } else {
+               vh= (ViewHoder) convertView.getTag();
+            }
+            Attraction attraction = attractions.get(position);
+            vh.iv.setImageResource(attraction.image);
+            vh.tv.setText(attraction.title);
+            return convertView;
+        }
+    }
+    public class ViewHoder{
+        ImageView iv;
+       TextView tv;
+    }
+    public class Attraction{
+        int image;
+        String title;
+    }
+ private class loaddataThread extends Thread{
+     @Override
+     public void run(){
+      loaddata();
+         try {
+             Thread.sleep(2000);
+         } catch (InterruptedException e) {
+             e.printStackTrace();
+         }
+         handler.sendEmptyMessage(1);
+
+     }
+ }
+    private android.os.Handler handler=new android.os.Handler()  {
+        @Override
+    public void handleMessage(Message msg)  {
+                switch (msg.what)   {
+                    case 1:
+                        adapter.notifyDataSetChanged();
+                        break;
+                    default:
+                        break;
+                }
+        }
+    } ;
+}
+
+
+
+
+listitem.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+  <ImageView
+      android:layout_width="100dp"
+      android:layout_height="70dp"
+      android:id="@+id/imageview01"
+      android:maxWidth="100dp"
+      android:maxHeight="70dp"
+      android:adjustViewBounds="true"
+      android:scaleType="fitXY"
+      android:src="@drawable/xz01"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:id="@+id/textview01"
+        android:textSize="14dp"
+        android:maxLines="5"/>
+</LinearLayout>
+
+
+listlayout.xml
+
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/listView"
+        android:layout_weight="1" />
+</LinearLayout>
+
+
+
+pagefootitem.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ÕýÔÚ¼ÓÔØ..."
+        android:id="@+id/textView" />
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar" />
+</LinearLayout>

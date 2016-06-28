@@ -1,0 +1,306 @@
+1.<Button
+        控件宽度:wrap_content恰好包裹内容.match_parent与父容器有相同的宽度
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="单击我"
+	唯一标识符.在Java程序中 可以通过findViewById("id名")来获取指定的Android界面组件
+        android:id="@+id/button" 
+        android:layout_below="@+id/textView"
+	距离右边距
+        android:layout_toRightOf="@+id/textView"
+	距离底部距离
+        android:layout_toEndOf="@+id/textView"
+	顶部余量
+        android:layout_marginTop="61dp"
+
+        android:onClick="clickHandler"
+        />
+
+2.View类
+--ViewGroup类
+  --ViewGroup.LayoutParams内部类
+	里的xml属性 android:layout_width:指定该子组件的布局宽度
+  --ViewGroup.MarginLayoutParams内部类
+	里的xml属性 android:layout_marginBottom:指定该子组件下边的页边距
+
+3.无论创建哪种UI组件.都需要传入this参数.代表Context参数.Context代表访问Android
+应用环境的全局信息的api.让ui组件通过该Context参数获取Androi应用环境的全局信息
+
+4.Context类
+  --Activity类
+  --Service类
+
+5.布局
+(1)线性布局LinearLayout
+将容器中的组件一个挨着一个排列
+
+android:orientation设置布局管理器内组件的排列方式.
+horizontal(水平排列)
+vertical(垂直排列)
+
+android:gravity设置布局管理器内组件的对齐方式
+top,bottom,left,right,center_vertical,left|vertical:出现在屏幕左侧且垂直居中
+
+LinearLayout里子元素受LinearLayout.LayoutParams控制
+属性android:layout_gravity 指定该子元素在LinearLayout中的对齐方式
+android:layout_weight 指定该子元素在LinearLayout中的权重
+
+(2)表格布局TableLayout 继承自Linearlayout
+通过添加TableRow来控制行数
+单元格的行为方式
+Shrinkable:单元格宽度可被收缩
+Stretchable:单元格宽度可被拉伸
+Collapsed:该列的所有单元格会被隐藏
+
+TableLayout支持LinearLayout所支持的所有xml属性
+另外支持
+android:collapseColumns="1" 第二列被隐藏
+android:shrinkColumns="2" 第三列被收缩
+
+(3)帧布局FrameLayout 继承ViewGroup
+类似于CardLayout 叠加
+
+(4)相对布局RelativeLayout
+(5)网格布局GridLayout
+
+6.TextView及其子类
+文本框TextView(标签)
+--EditText:编辑框
+--Button:按钮
+
+(1)EditText
+<EditText
+   android:layout_width="wrap_content"
+   android:layout_height="wrap_content"
+   android:hint="指定文本框的默认显示文本"
+   如果文本框内容可选择.设置是否当它获取焦点时自动选中所有文本
+   android:selectAllOnFocus="true"
+   //只接受数字密码
+   android:inputType="numberPassword"
+/>
+
+(2)Button的子类
+<1>RadioButton单选按钮
+额外的android:checked="true"属性
+
+<!-- 定义一组单选按钮 -->
+<RadioGroup android:id="@+id/rg"
+android:orientation="horizontal"
+android:layout_gravity="center_horizontal">
+   <!-- 定义两个单选按钮 -->
+   <RadioButton android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/male"
+    android:text="男"
+    android:checked="true"/>
+   <RadioButton android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/female"
+    android:text="女"/>
+</RadioGroup>
+
+在main.java中注册监听
+radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+{
+   @Override
+   public void onCheckedChanged(RadioGroup group, int checkedId)
+   {
+   // 根据用户勾选的单选按钮来动态改变tip字符串的值
+   //如果checkedId为man则返回男人.否则返回女人
+   String tip = checkedId == R.id.man?"男人": "女人";
+   // 修改show组件中的文本.show是上面定义的一个TextView组件
+   show.setText(tip);
+   }
+});
+<2>CheckBox复选框
+<3>ToggleButton开关按钮
+<4>Switch开关(有形状)
+OnCheckedChangeListener listener = new OnCheckedChangeListener()
+{
+   @Override
+   public void onCheckedChanged(CompoundButton button, boolean isChecked)
+   {
+        if(isChecked)
+        {
+	// 设置LinearLayout垂直布局
+	test.setOrientation(1);
+	toggle.setChecked(true);
+	switcher.setChecked(true);
+	}
+	else
+	{
+	// 设置LinearLayout水平布局
+	test.setOrientation(0);
+	toggle.setChecked(false);
+	switcher.setChecked(false);
+	}
+    }
+};
+toggle.setOnCheckedChangeListener(listener);
+switcher.setOnCheckedChangeListener(listener);
+
+
+(3)ImageView及其子类
+<1>继承自View.显示图片.任何Drawable对象均可用ImageView显示
+ImageView
+--ImageButton
+  --ZoomButton
+--QuickContactBadge
+
+ImageView支持的xml属性
+android:src 设置ImageView显示的Drawable对象的id
+
+<2>点击按钮显示下一张图片
+int[] images = new int[]
+{R.drawable.lijiang,R.drawable.qiao,R.drawable.shuangta,
+R.drawable.shui,R.drawable.xiangbi,};
+...
+next.setOnClickListener(new View.OnClickListener()
+{
+   @Override
+   public void onClick(View v)
+   {
+   // 控制ImageView显示下一张图片
+   image1.setImageResource(
+   images[++currentImg % images.length]);
+   }
+});
+
+<3>按下按钮显示不同图片
+<!-- 按下时显示不同图片的按钮 -->
+<ImageButton
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:src="@drawable/button_selector"
+/>
+
+引用的src为button_selector也是个xml文件
+<?xml version="1.0" encoding="UTF-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+   <!-- 指定按钮按钮下时的图片 -->
+   <item android:state_pressed="true"
+   android:drawable="@drawable/red"
+   />
+   <!-- 指定按钮松开时的图片 -->	
+   <item android:state_pressed="false"
+   android:drawable="@drawable/purple"
+   />
+</selector>
+
+其中button_selector中引用两张图片
+
+<4>一个缩小按钮.图片在android自带的目录下
+<ZoomButton
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:id="@+id/btn_zoom_down"
+android:src="@android:drawable/btn_minus" />
+<5>带有缩小和放大的组件
+<!-- 定义ZoomControls组件 -->
+<ZoomControls android:id="@+id/zoomControls1"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_gravity="center_horizontal"/>
+
+(4)AdapterView及其子类
+视图列表LIstView
+
+或让Activity.java继承ListActivity类
+
+<1>LIstView常用xml属性
+android:driver 分割条
+android:entries 指定一个数组资源.用来生成ListView
+
+<2>简单的ListView
+<!-- 直接使用数组资源给出列表项 -->
+<!-- 设置使用红色的分隔条 -->
+<ListView
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:entries="@array/books"
+android:divider="#f00"
+android:dividerHeight="2px"
+android:headerDividersEnabled="false"/>
+
+在values下的arrays.xml中定义该数组
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string-array name="books">
+		<item>疯狂Java讲义</item>
+		<item>疯狂Ajax讲义</item>
+		<item>疯狂XML讲义</item>
+		<item>疯狂Android讲义</item>
+	</string-array>
+</resources>
+
+只能简单的创建ListView
+若要对ListView的外观.行为进行定制.需要把ListView作为AdapterView使用
+通过Adapter控制每个列表项的外观和行为
+
+<3>Adapter接口和实现类
+Adapter
+BaseAdapter实现ListAdapter和SpinnerAdapter
+--ArrayAdapter
+--SimpleAdapter
+
+<4>利用ArrayAdapter创建ListView
+[1]main.xml中仅定义ListView框架
+<ListView
+android:id="@+id/list1"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:divider="#f00"
+android:dividerHeight="2px"
+android:headerDividersEnabled="false"/>
+
+[2]MainActivity.java中
+ListView list1 = (ListView) findViewById(R.id.list1);
+// 定义一个数组.作为ListView里的内容
+String[] arr1 = { "孙悟空", "猪八戒", "牛魔王" };
+// 将数组包装为ArrayAdapter.传入的参数为(Context,textViewResourceId,数组或List)
+ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(this, R.layout.array_item, arr1);
+// 为ListView设置Adapter
+list1.setAdapter(adapter1);
+
+[3]array_item.xml.所有layout文件夹下的文件名.会自动生成一个同名的id
+其中参数 R.layout.array_item用来指定ListView中每一项如何显示
+<TextView
+android:id="@+id/TextView"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"	
+android:textSize="24dp"
+android:padding="10px"
+android:shadowColor="#f0f"
+android:shadowDx="4"
+android:shadowDy="4"
+android:shadowRadius="2"/>
+
+<5>继承ListActivity实现列表,无需xml布局文件.相当于它的布局文件只有一个ListView
+public class MainActivity extends ListActivity
+{
+	@Override
+	public void onCreate(Bundle savedInstanceState)
+	{
+		super.onCreate(savedInstanceState);
+		// 无须使用布局文件
+		String[] arr = { "孙悟空", "猪八戒", "唐僧" };
+		// 创建ArrayAdapter对象
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+				android.R.layout.simple_list_item_multiple_choice, arr);
+		// 设置该窗口显示列表
+		setListAdapter(adapter);
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

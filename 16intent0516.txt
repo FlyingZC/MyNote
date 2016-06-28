@@ -1,0 +1,356 @@
+2016/5/16
+快捷键 ctrl+alt+space:代码提示 ctrl+p
+intent
+一.发送intent(意图)的几种方式
+1.直接
+Intent intent=new Intent(this,Activity2.class);
+startActivity(intent);
+
+2.ComponentName
+Intent intent=new Intent();
+ComponentName componentName=new ComponentName(this,Activity2.class);
+intent.setComponent(componentName);
+startActivity(intent);
+
+3.使用action:行动
+(1)
+Intent intent=new Intent();
+intent.setAction(Intent.ACTION_ANSWER);
+startActivity(intent);
+
+AndroidManifest.xml中
+<activity android:name=".Activity4">
+	<intent-filter>
+	//则会跳转到该Activity4
+		 <action android:name="android.intent.action.ANSWER"></action>
+		 //默认的category:种类.可有多个
+		 <category android:name="android.intent.category.DEFAULT"></category>
+	</intent-filter>
+</activity>
+
+(2)使用自定义action
+Activity3.java中定义一个static的自定义action.需加上包名com.example.administrator
+public static final String MY_ACTION="com.example.administrator.MY_INTENT_ACTION";
+
+<activity android:name=".Activity3">
+	<intent-filter>
+		 <!--action要和category配对使用.如果没有定义category.使用default-->
+		 //仍然要声明
+		 <action android:name="com.example.administrator.MY_INTENT_ACTION"></action>
+		 <category android:name="android.intent.category.DEFAULT"></category>
+	</intent-filter>
+</activity>
+
+MainActivity.java中发送意图
+Intent intent=new Intent();
+intent.setAction(Activity3.MY_ACTION);
+startActivity(intent);
+
+4.使用category:种类
+ Intent intent=new Intent();
+//只能有一个行为
+intent.setAction(Intent.ACTION_MAIN);
+//可以有多个种类.该intent的action与MainActivity的Action相同.但是category不同.需同时满足
+intent.addCategory(Intent.CATEGORY_HOME);
+startActivity(intent);
+
+----主界面category为LAUNCHER
+<activity android:name=".MainActivity" >
+	<intent-filter>
+		 <action android:name="android.intent.action.MAIN" />
+		 <!--app启动时启动该activity-->
+		 <category android:name="android.intent.category.LAUNCHER" />
+	</intent-filter>
+</activity>
+
+二.使用intent携带数据
+onCreate(Bundle savedInstanceState)
+onStart()
+onResume()
+onPause()
+onStop()
+1.直接将数据放入Bundle对象中进行携带
+Intent intent=new Intent(this,Activity2.class);
+Bundle bundle=new Bundle();
+bundle.putString("name",name);
+bundle.putString("age",age);
+...
+intent.putExtra("personInfo",bundle);
+
+2.使用Serializable接口传递对象
+Person person=new Person();
+person.setName("zc");
+...
+intent.putExtra("person",person);
+注意 Person类实现Serializable接口即可.序列化
+public class Person implements Serializable{}
+
+3.使用Parcel
+Student student=new Student();
+student.setAge(20);
+...
+intent.putExtra("student",student);
+startActivity(intent);
+
+Student类要实现Parcelable接口
+public class Student implements Parcelable
+{
+	private int id;
+	private String name;
+	private int age;
+	//提供一个构造器.参数为Parcel类型
+	  private Student(Parcel in)
+    {
+        this.id=in.readInt();
+        this.name=in.readString();
+        this.age=in.readInt();
+    }
+	 //实现Parcel需要实现以下两个方法 
+	 describeContents(),
+	 writeToParcel()
+    //即：将类的数据写入外部提供的Parcel中，
+	 打包需要传递的数据到Parcel容器保存，
+	 以便从 Parcel容器获取数据
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    //Parcel就是包.将Student对象打包.写入到Parcel对象中.将你的对象序列化为一个Parcel对象
+    @Override
+    public void writeToParcel(Parcel in, int flags) {
+        in.writeInt(id);
+        in.writeString(name);
+        in.writeInt(age);
+    }
+
+	//从Parcel中读取数据
+    public static final Parcelable.Creator<Student> CREATOR = new Creator<Student>()
+    {
+        //通过writeToParcel将你的对象映射成Parcel对象，再通过createFromParcel将Parcel对象映射成你的对象。
+        //也可以将Parcel看成是一个流，通过writeToParcel把对象写到流里面，在通过createFromParcel从流里读取对象
+
+        //从已经存入parcel的数据里创建出你所需的对象.
+        @Override
+        public Student createFromParcel(Parcel in)
+        {//创建一个对象
+            //实现从Parcel容器中读取传递数据值，封装成Parcelable对象返回逻辑层，
+            return new Student(in);
+        }
+
+        @Override
+        public Student[] newArray(int size)
+        {//创建对象数组
+            return new Student[size];
+        }
+    };
+}
+
+三.接收intent意图
+需要接收intent的Activity中
+Intent intent=getIntent();//也可以new一个Intent
+Bundle data=intent.getBundleExtra("personInfo");
+String name=data.getString("name");
+...
+
+//获取Intent中通过Serializable方式携带的数据
+Person person= (Person) intent.getSerializableExtra("person");
+获取的即为对象.调用person.getXXX()或toString()即可
+//Parcel
+Student student=intent.getParcelableExtra("student");
+
+四.使用带返回结果的Intent
+Activity1中
+public void showNextActivity(View v)
+{
+  Intent intent=new Intent(this,Activity4.class);
+  //startActivity(intent);
+  //为了能够带回结果(intent,requestCode)请求码
+  startActivityForResult(intent,10);
+}
+
+ //重写该刚发处理返回结果
+@Override
+protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+  super.onActivityResult(requestCode, resultCode, data);
+
+  switch (requestCode)
+  {
+		case 10:
+		if(resultCode==RESULT_OK)
+		{
+			 String phoneNum=data.getStringExtra("phones");
+			 editText.setText(phoneNum);
+		}
+  }
+}
+
+Activity4中
+Intent intent=getIntent();
+intent.putExtra("phones",phone);
+//(resultCode)
+this.setResult(RESULT_OK,intent);
+this.finish();
+
+
+四.设置Activity主题
+1.
+//不显示系统的标题栏
+getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//不显示程序的标题栏
+requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+在AndroidManifest.xml中设置主题.屏幕方向
+ <activity android:name=".MainActivity" 
+	android:screenOrientation="portrait"
+	android:theme="@style/Animation.AppCompat.Dialog"
+	android:configChanges="orientation"></activity>
+
+2.实现横竖屏切换.无需重启Activity
+在Android中每次屏幕的切换动会重启Activity,应在Activity销毁前保存当前活动的状态，
+在Activity再次Create的时候载入配置。
+在AndroidManifest.xml中加上android:configChanges="keyboardHidden|orientation"属性,
+就不会重启activity.而只是调用Activity中重写的onConfigurationChanged(Configuration newConfig)方法
+这样就可以在这个方法里调整显示方式.
+
+AndroidManifest.xml中
+<activity android:name=".MainActivity"
+//当横竖屏发生改变时.调用onConfigurationChanged(Configuration newConfig)方法
+	android:configChanges="orientation|keyboardHidden|screenSize">
+	...
+</activity>
+
+ private View.OnClickListener onClick=new View.OnClickListener() {
+  @Override
+  public void onClick(View v) {
+		//设置屏幕为横屏
+		if(v==butLand){
+			 MainActivity.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+			 //设置为置屏幕为竖屏
+		}else{
+			 MainActivity.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		}
+  }
+};
+
+ //监听系统设置的更改
+@Override
+public void onConfigurationChanged(Configuration newConfig) {
+  super.onConfigurationChanged(newConfig);
+  //重新加载布局.或者自定义另一个布局
+  setContentView(R.layout.activity_main);
+  butLand= (Button) findViewById(R.id.button_land);
+  butShu= (Button) findViewById(R.id.button_shu);
+  butLand.setOnClickListener(onClick);
+  butShu.setOnClickListener(onClick);
+  String message=newConfig.orientation==Configuration.ORIENTATION_LANDSCAPE ? "屏幕设置为：横屏" : "屏幕设置为：竖屏";
+  Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
+}
+
+五.标题栏右上角的菜单
+1.显示菜单
+public boolean onCreateOptionsMenu(Menu menu) {
+  getMenuInflater().inflate(R.menu.hello_world, menu);
+  return true;
+}
+
+hello_world.xml
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+   <item android:title="第一个" android:id="@+id/list_item_01"></item>
+    <item android:title="第二个" android:id="@+id/list_item_02"></item>
+    <item android:title="第三个" android:id="@+id/list_item_03"></item>
+</menu>
+
+2.添加事件
+@Override
+public boolean onOptionsItemSelected(MenuItem item) {
+  switch (item.getItemId())
+  {
+		case R.id.list_item_01:
+		Toast.makeText(this,"您选择了第一项",Toast.LENGTH_SHORT).show();
+			 break;
+		case R.id.list_item_02:
+			 Toast.makeText(this,"您选择了第二项",Toast.LENGTH_SHORT).show();
+		case R.id.list_item_03:
+			 Toast.makeText(this,"您选择了第三项",Toast.LENGTH_SHORT).show();
+  }
+  return true;
+}
+
+3.finish()可以销毁当前活动
+
+4.Bundle对象存放数据
+ @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putString("name", "zccc");
+    }
+//取出
+ protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        if(savedInstanceState!=null)
+        {
+            String name=savedInstanceState.getString("name");
+            Toast.makeText(this,name,Toast.LENGTH_LONG).show();
+        }
+    }
+
+5.ActivityCollector可以实现在任何activity中点返回键退出程序
+package com.example.activitytest;
+import java.util.ArrayList;
+import java.util.List;
+import android.app.Activity;
+public class ActivityCollector {
+	public static List<Activity> activities = new ArrayList<Activity>();
+	//将活动加入到List中
+	public static void addActivity(Activity activity) {
+		activities.add(activity);
+	}
+	//移除
+	public static void removeActivity(Activity activity) {
+		activities.remove(activity);
+	}
+	//销毁所有Activity
+	public static void finishAll() {
+		for (Activity activity : activities) {
+			if (!activity.isFinishing()) {
+				activity.finish();
+			}
+		}
+	}
+}
+
+然后在每一个Activity中
+@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		//添加
+		ActivityCollector.addActivity(this);
+		button3.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+			//单击 销毁退出程序
+				ActivityCollector.finishAll();
+			}
+		});
+	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		//调用移除该activity
+		ActivityCollector.removeActivity(this);
+	}
+
+四.UI
+1.
+    <TextView android:text="Hello World!" 
+	 //布局宽度.包裹内容
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+		  //TextView中的内容居中.也可用在布局中
+        android:gravity="center"
+		  //在布局中.水平居中
+        android:layout_gravity="center_horizontal"/>
+2.安卓组件几种状态
+visible:可见.invisible:不可见,占据位置.gone:完全消失

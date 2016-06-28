@@ -1,0 +1,39 @@
+overflow:hidden;在父元素中写.消除子元素浮动对父元素的影响
+clear:both;
+状态码:202 请求成功 404 500服务器内部错误
+
+get不能超过8k
+get不能传文件
+
+Servlet接口
+实现类 public abstract class 
+javax.servlet.GenericServlet
+比如基于ftp..
+HttpServlet继承于GenericServlet
+javax.servlet.http.HttpServlet
+extends GenericServlet 
+implements java.io.Serializable
+
+doGet()
+doPost()
+servlice()无需实现.包含doGet(),doPost(),doDelete(),doPut()
+参数由容器创建
+protected void doGet(HttpServletRequest req,HttpServletResponse resp)throws ServletException,java.io.IOException
+
+
+HttpServletRequest接口implements ServletResquest
+
+getContextPath()
+<%=request.getContextPath()%>
+请求上下文部分url,即/javaweb328
+与uri的区别
+
+
+Servlet是多线程(不是进程级)
+
+
+garbage collected:
+
+destroy()
+getServletConfig()
+service()

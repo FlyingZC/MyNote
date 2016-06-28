@@ -1,0 +1,217 @@
+2016/3/12
+1.<%@page import="java.util.Date" %>
+2.<%中间写java代码.称为脚本片段%>
+没有在<%%>之间的内容称为JSP模板元素
+3.JSP的java代码用out.println将删除到客户端
+System.out.println()输出到控制台
+4.JSP表达式元素.将输出的变量或者表达式封装在<%=这里%>
+5.C:\Users\Administrator\workspace2\.metadata\.plugins\org.eclipse.wst.server.core\tmp0目录下和tomcat目录很像
+jsp对应的servlet文件.也可能在temp1下
+
+C:\Users\Administrator\workspace2\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\work\Catalina\localhost\MyJSP\org\apache\jsp\hello_jsp.ja
+va
+里面public final class Hello_jsp extends org.apache.jasper.runtime.HttpJspBase
+    implements org.apache.jasper.runtime.JspSourceDependent
+再看HttpJspBase源码发现HttpJspBase extends HttpServlet且 其中的init()等方法调用_jspinit()方法
+说明JSP生成的java文件间接继承HttpServlet
+
+6.JSP隐含对象
+Hello_jsp.java中本身定义的对象
+public void _jspService(final javax.servlet.http.HttpServletRequest request, final javax.servlet.http.HttpServletResponse response)
+        throws java.io.IOException, javax.servlet.ServletException {
+
+    final javax.servlet.jsp.PageContext pageContext;
+    javax.servlet.http.HttpSession session = null;
+    final javax.servlet.ServletContext application;
+    final javax.servlet.ServletConfig config;
+    javax.servlet.jsp.JspWriter out = null;
+    final java.lang.Object page = this;
+    javax.servlet.jsp.JspWriter _jspx_out = null;
+    javax.servlet.jsp.PageContext _jspx_page_context = null;
+
+7.如果服务器运行成功了.但是控制台没有输出信息.试着在页面输入http://localhost:8080/MyJSP/Hello.jsp 再刷新看看
+如果是Servlet.记得要访问(在web.xml里找到具体映射路径)
+如果修改了页面.输入地址.控制台不输出信息.重新运行服务器吧
+
+8.Hello.jsp
+<%@page import="java.util.Date" %>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<%
+		Date date=new Date();
+		System.out.println(date);
+		System.out.println("HelloJSP");
+		String name=request.getParameter("name");
+		System.out.println(name);
+		
+		//Class clazz=response.getClass();
+		//System.out.println(clazz);
+	%>
+</body>
+</html>
+在地址栏输入http://localhost:8080/MyJSP/Hello.jsp?name=zcc 这是一个get请求.上面的request.getParameter("name")即可以获取到zcc.即request是HttpServletRequest对象
+
+pageContext对象:页面的上下文.可以从这个对象获取当前页面的所有对象(可以获取其他8个隐含对象)
+
+application是ServletContext对象.代表整个web应用
+System.out.println(application.getInitParameter("user"));
+可以获取web.xml中的
+<context-param>
+  	<param-name>user</param-name>
+  	<param-value>zcccccc</param-value>
+  </context-param>
+
+jsp也可以在web.xml里进行映射
+ <servlet>
+    <servlet-name>hellojsp</servlet-name>
+    <jsp-file>/hello.jsp</jsp-file>
+    <init-param>
+      <param-name>test</param-name>
+      <param-value>testValue</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>hellojsp</servlet-name>
+    <url-pattern>/hellojsp</url-pattern>
+  </servlet-mapping>
+  <servlet>
+
+out:JspWriter对象.
+<%
+   out.println(name);
+   out.println("<br/><br/>");
+   out.println("呵呵");
+%>
+
+编码问题.默认的jsp编码为
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+ pageEncoding="ISO-8859-1" %>
+写不了中文
+window->perferences->general(输入jsp)->jsp files->Encoding->utf-8
+
+jsp模板元素:静态的html元素
+jsp表达式<%= >
+
+eclipse.ini
+-startup
+plugins/org.eclipse.equinox.launcher_1.3.0.v20120522-1813.jar
+--launcher.library
+plugins/org.eclipse.equinox.launcher.win32.win32.x86_64_1.1.200.v20120522-1813
+-product
+org.eclipse.epp.package.jee.product
+--launcher.defaultAction
+openFile
+--launcher.XXMaxPermSize
+256M
+-showsplash
+org.eclipse.platform
+--launcher.XXMaxPermSize
+256m
+--launcher.defaultAction
+openFile
+-vmargs
+-Dosgi.requiredJavaVersion=1.5
+-Dhelp.lucene.tokenizer=standard
+-Xms40m
+-Xmx512m
+
+jsp注释:<%-- 可以在控制台输出-->
+jsp文件名在地址栏中也区分大小写
+
+和属性相关的方法
+Object getAttribute(String name):获取指定的属性
+Enumeration getAttributeNames():
+removeAttribute(String name)
+void setAttribute(String name,Object o)
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<%
+		pageContext.setAttribute("pageContextMingZi","pageContextValueZC");
+		request.setAttribute("请求名","请求值");
+		session.setAttribute("session名","session值");
+		application.setAttribute("app名","app值");
+		
+	%>
+	<br/><br/>
+	pageContextAttr:
+	<%=pageContext.getAttribute("pageContextMingZi") %>
+	<br/><br/>
+	requestAttr:
+	<%=request.getAttribute("请求名") %>
+	sessionAttr:
+	<%=session.getAttribute("session名") %>
+	applicationAttr:
+	<%=application.getAttribute("app名") %>
+	
+	
+</body>
+</html>
+
+test.html中
+<a href="forwardServlet">链接到forward</a>
+对应地址栏为http://localhost:8080/MyJSP/test.html
+点击链接
+web.xml中配置
+<servlet>
+    <description></description>
+    <display-name>ForwardServlet</display-name>
+    <servlet-name>ForwardServlet</servlet-name>
+    <servlet-class>com.zc.javaweb.ForwardServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ForwardServlet</servlet-name>
+    <url-pattern>/forwardServlet</url-pattern>
+  </servlet-mapping>
+
+对应Servlet为ForwardServlet.java
+package com.zc.javaweb;
+
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Servlet implementation class ForwardServlet
+ */
+public class ForwardServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		System.out.println("forward的doGet方法");
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+	}
+
+}
+
+点击链接地址会跳转到
+http://localhost:8080/MyJSP/forwardServlet
+即调用ForwardServlet.java
+
+

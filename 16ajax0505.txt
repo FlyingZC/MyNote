@@ -1,0 +1,83 @@
+2016/5/5
+1.load(url,data,callback)
+url:被加载的页面地址
+data:key,value的json格式
+callback:回调函数.可选
+
+$(function(){
+		$("#btn").click(function(){
+			alert("hehe");
+			//加载t4.html里的hah
+			$("#heh").load("t4.html #hah");
+		});
+	})
+
+2.全局函数调用json格式的数据
+$.getJSON(url,data,callback);
+
+UserInfo.json
+里必须最外围有[].因为内部是数组
+
+[
+	{
+		"name":"zcc",
+		"sex":"男",
+		"email":"112112@qq.com"
+	},
+	{
+		"name":"xdd",
+		"sex":"女",
+		"email":"21212@qq.com"
+	}
+]
+
+test_getJson.html
+$(function(){
+				$("#btn").click(function(){
+					alert("hehee");
+					$.getJSON("UserInfo.json",function(data){
+						$("#heh").empty();
+						alert("hehee");
+						var strHtml="";
+						$.each(data,function(infoIndex,info){
+							strHtml+="姓名:"+info["name"]+"<br/>";
+							strHtml+="性别"+info["sex"]+"<br/>";
+							strHtml+="邮箱"+info["email"]+"<br/>";
+						});
+						$("#heh").html(strHtml);
+					});
+				});
+			})
+
+3.全局函数调用js脚本
+$.getScript("UserInfo.js");
+
+UserInfo.js里
+var data = [
+  {
+      "name": "陶国荣",
+      "sex": "男",
+      "email": "tao_guo_rong@163.com"
+  },
+  {
+      "name": "李建洲",
+      "sex": "女",
+      "email": "xiaoli@163.com"
+  }
+];
+
+var strHTML = ""; //初始化保存内容变量
+$.each(data, function() { //遍历获取的数据
+    strHTML += "姓名：" + this["name"] + "<br>";
+    strHTML += "性别：" + this["sex"] + "<br>";
+    strHTML += "邮箱：" + this["email"] + "<hr>";
+})
+$("#divTip").html(strHTML); //显示处理后的数据
+
+4.$.ajaxSetup({options})
+可选参数是一个对象.通过该对象可以设置$.ajax()方法中的参数
+
+5.Ajax全局时间
+ajaxStart()
+ajaxStop()
+ajaxSuccess()...

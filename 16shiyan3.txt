@@ -1,0 +1,33 @@
+2016/6/26
+实验三stucts2
+1.BeanListHandler<Group>按查询出来的结果的列名 去找对应类的属性.所以在Group里加入其它需要查出来的属性
+2.如果配置struts2后连首页都进不了.修改struts.xml配置文件里的class标签为你写的Action类.因为在xml中配置struts2支持时.拦截了所有请求
+3.struts如何拦截a链接请求.
+页面中<a href="group_logout.action">退出</a>
+默认支持无后缀名和.action后缀
+4.查询不出来...在GroupAction里将currentPage和pageSize的默认值设置反了.
+可以尝试打印sql语句.再输出查询结果
+5.转发地址栏就是不变啊...数据没显示出来.jsp页面没加el标签声明....
+6.struts.xml中
+<action name="group_find" class="com.zc.action.GroupAction" method="query">
+	<result name="query_success" type="dispatcher">/group/group_show.jsp</result>
+</action>
+
+7.为按钮加链接
+$("#btn_findGroup").click(function(){
+注意是=
+	window.location.href="group_find.action";
+});
+8.
+UPDATE match_group,project
+//更新多个中间逗号即可
+SET match_group.group_name="rren",project.project_name="我去" 
+WHERE match_group.group_id=5 AND match_group.`project_id`=project.`project_id`
+
+9.
+<action name="group_query" class="com.zc.action.GroupAction" method="query">
+	<result name="query_success" type="dispatcher">/group/group_show.jsp</result>
+</action>
+<action name="group_update" class="com.zc.action.GroupAction" method="update">
+
+</action>

@@ -1,0 +1,187 @@
+2016/3/7
+0.定制右键window->customize Perspective->Shortcuts->全取消->General file folder 
+Java Junit Test
+JavaEE 
+SQLFile
+Web
+xml file
+1.server里修改port
+2.80端口被System占用
+3.在cmd中netstat -ano:查看端口号
+本地地址最后一列即为端口号
+0.0.0.0:80 最后一列为Pid 4为系统
+2.端口
+如果把IP地址比作一间房子 ，端口就是出入这间房子的门。真正的房子只有几个门，但是一个IP地址的端口可以有65536（即：2^16）个之多！端口是通过端口号来标记的，端口号只有整数，范围是从0 到65535（2^16-1）。
+
+3.
+<1>查找IIS服务
+控制面板->控制面板\系统和安全\管理工具
+internet信息服务（IIS）管理器
+若没有.则下面打开
+<2>启动IIS 
+控制面板->程序->启用或关闭windows功能->Internet Information Services->web管理工具打钩
+<3>关闭IIS(这个对我没用)
+
+4.在注册表中修改冲突的端口
+注册表是windows操作系统中的一个核心数据库，其中存放着各种参数，直接控制着windows的启动、硬件驱动程序的装载以及一些windows应用程序的运行，从而在整个系统中起着核心作用。这些作用包括了软、硬件的相关配置和状态信息，比如注册表中保存有应用程序和资源管理器外壳的初始条件、首选项和卸载数据等，联网计算机的整个系统的设置和各种许可，文件扩展名与应用程序的关联，硬件部件的描述、状态和属性，性能记录和其他底层的系统状态信息，以及其他数据等。
+
+2016/3/20
+超链接是get请求.post请求只有表单中的method为post时才是.
+
+1.新建test.jsp用来显示结果
+里面有个超链接
+<a href="listAllStudents">List All Students</a>
+2.新建包.建立servlet类名ListAllStudentsServlet
+对应web.xml中会生成映射
+重写doGet()方法
+request.setAttribute("students",Arrays.asList("AA","BB","CC"));
+//转发
+request.getRequestDispatcher("/students.jsp").forward(request,response);
+3.新建students.jsp
+记得导包<%@ page import="java.util.List" %>
+<%=request.getAttribute("students") %>
+
+实现遍历
+<%List<String> names=(List)request.getAttribute("students");
+		for(String name:names){
+	%>
+		<%=name %><br/>
+	<%	
+		}
+	%>
+4.jsp是不需要映射的.在地址栏输入../test.jsp里面有超链接.点击链接到ListAllStudentsServlet.这里有请求的转发.并设置了参数.页面跳转到http://localhost:8080/MyWeb/listAllStudents (链接不变)
+students.jsp 显示最终结果
+
+如果项目导入不能运行.右键项目名.propertitis->Java Build Path->libraries->remove->add libraries->jre system libraries
+如果识别不了Servlet接口propertitis->Java Build Path->libraries->add extral jars(到tomcat下的lib文件夹下找servlet.jar)
+
+5.新建一个Student类
+eclipse中尤其jsp中代码提示设置
+打开eclipse→Windows→Preferences→Java→Editor→Content Assist；修改Auto Activation triggers for java的值为：.abc   点击apply按钮。
+在students.jsp中List<Student> stus=(List<Student>)request.getArttribute("students");
+
+6.新建Dao类
+package com.zc.javaweb;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class StudentDao 
+{
+	
+	public List<Student> getAll()
+	{
+		List<Student> students=new ArrayList<Student>();
+		Connection connection=null;
+		PreparedStatement preparedStatement=null;
+		ResultSet resultSet=null;
+		try
+		{
+			String driverClass="com.microsoft.sqlserver.jdbc.SQLServerDriver";
+			String url="jdbc:sqlserver://localhost:1433;DatabaseName=Shang";
+			String user="sa";
+			String password="1262";
+			//反射
+			Class.forName(driverClass);
+			connection=DriverManager.getConnection(url,user,password);
+			String sql="select * from Student";
+			preparedStatement=connection.prepareStatement(sql);
+			resultSet=preparedStatement.executeQuery();
+			while(resultSet.next())
+			{
+				int flowId=resultSet.getInt(1);
+				int type=resultSet.getInt(2);
+				String idCard=resultSet.getString(3);
+				String examCard=resultSet.getString(4);
+				String studentName=resultSet.getString(5);
+				String location=resultSet.getString(6);
+				int grade=resultSet.getInt(7);
+				
+				Student student=new Student(flowId,type,idCard,examCard,studentName,location,grade);
+				students.add(student);
+				
+			}
+			
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		finally
+		{
+			try
+			{
+				if(resultSet!=null)
+				{
+					resultSet.close();
+				}
+			}
+			catch(SQLException se)
+			{
+				se.printStackTrace();
+			}
+			
+			try
+			{
+				if(preparedStatement!=null)
+				{
+					resultSet.close();
+				}
+			}
+			catch(SQLException se)
+			{
+				se.printStackTrace();
+			}
+			try
+			{
+				if(connection!=null)
+				{
+					connection.close();
+				}
+			}
+			catch(SQLException se)
+			{
+				se.printStackTrace();
+			}
+		}
+			
+		return students;
+	}
+}
+
+7.在ListAllStudentsServlet.java类中完成Dao的调用和转发到students.jsp页面
+StudentDao studentDao=new StudentDao();
+		List<Student> students=studentDao.getAll();
+		//
+		request.setAttribute("students", students);
+		//转发
+		request.getRequestDispatcher("/students.jsp").forward(request, response);
+
+8.在students.jsp中
+<%
+		//获取从ListAllStudentServlet.java里传来的参数
+		List<Student> stus=(List<Student>)request.getAttribute("students");
+	
+	%>
+然后循环遍历显示即可
+且用循环创建表格
+<tr>
+   <td></td>
+   <td></td>
+</tr>
+通过循环.数据库中有多少行便会生成多少tr
+
+二.实现删除操作
+1.在students.jsp页面添加删除按钮
+<td><a href="deleteStudent?flowId=<%=student.getFlowId() %>">Delete</a></td>
+//?代表get请求.将flowId=student.getFlowId()传给deleteStudent的Servlet类
+2.创建deleteStudent的Servlet类
+接收删除请求.并调用
+
+2.

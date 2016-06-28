@@ -1,0 +1,43 @@
+1.<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+pageEncoding是jsp文件本身的编码.用来将jsp转成servlet的编码
+
+contentType的charset是指服务器发送给客户端时的内容编码
+
+JSP要经过两次的“编码”，第一阶段会用pageEncoding，第二阶段会用utf-8至utf-8，第三阶段就是由Tomcat出来的网页， 用的是contentType。
+
+第一阶段是jsp编译成.java，它会根据pageEncoding的设定读取jsp，结果是由指定的编码方案翻译成统一的UTF-8 JAVA源码（即.java），如果pageEncoding
+设定错了，或没有设定，出来的就是中文乱码。
+
+第二阶段是由JAVAC的JAVA源码至java byteCode的编译，不论JSP编写时候用的是什么编码方案，经过这个阶段的结果全部是UTF-8的encoding的java源码。
+
+
+2.//一般用于网络协议中，比如最常用的HTTP：//就是超文本传输协议，//一般都用协议名+冒号+//表示，如FTP：// MMS：//等等。
+\\一般用于局域网中计算机之间的互访，也就是说它后面加一个IP或者机器名，可以访问另一台机器。
+在WINDOWS里面很多情况下/和\是可以通用的，也就是说不管你输什么都可以达到相同的目的，尤其是在地址栏中。但是，正规的地址表示还是应该用/，比
+如C：/WINDOWS等。
+\一般在WINDOWS中比较少用。
+这几个符号应该要区分清楚，上面说到的/\通用的问题并不适用于所有程序，尤其当涉及到脚本、编程等时一定要区别开。正则表达式中这两个符号的意义
+也是不同的。
+
+3.当请求的Servlet资源不可用.注意看地址栏.肯定不对404
+若要用相对路径.可以先看看当前路径
+如http://localhost:8080/BBS/user/login.jsp
+而UserServlet在servlet包下的UserServlet.java
+配置在xml中的路径为<url-pattern>/servlet/UserServlet
+http://localhost:8080/BBS/servlet/UserServlet
+所以login页面中的action为../servlet/UserServlet
+
+4.request.getContextPath()拿到的是你的web项目的根路径，就是webRoot。
+
+request.getScheme() 返回当前链接使用的协议；比如，一般应用返回http;SSL返回https;
+
+request.getSchema()可以返回当前页面使用的协议，http 或是 https;
+request.getServerName()可以返回当前页面所在的服务器的名字;
+request.getServerPort()可以返回当前页面所在的服务器使用的端口,就是80;
+request.getContextPath()可以返回当前页面所在的应用的名字;
+
+String path = request.getContextPath();  
+  
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";  
+  
+<base href="<%=basePath%>">  

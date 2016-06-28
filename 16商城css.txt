@@ -1,0 +1,68 @@
+*{
+	font-size:12px;
+}
+
+/*主体设置*/
+#mall_body{
+	width:860px;
+	height:800px;
+	border: 1px solid red;
+	/*
+	 margin:0外边距全部为0
+	 margin:0 100px 上下为0.左右为100
+	 margin: 0 auto;上下为0.左右自适应
+	 margin: 0 100px 20px;左右为100.左.上.右.下
+}
+	 * */
+	margin: 0 100px 20px,50px;
+}
+
+/*最新推荐*/
+.zxtj{
+	margin:20px 0 12px;
+}
+
+/*搜索导航*/
+.search_navigation{
+	
+}
+
+/*每个商品*/
+.mall_product_info{
+	width:150px;
+	height: 200px;
+	
+	border: #D1D1D1 1px solid ;
+	margin:6px;
+	/*会漂移到父元素内的左侧*/
+	float:left;
+	
+}
+
+.mall_product_info:hover{
+	border:red 1px solid;
+}
+
+.mall_product_pic{
+	text-align:center;
+}
+
+.deleteprice{
+	text-decoration: line-through;
+	
+}
+.lowprice{
+	background-color:red;
+	color:white;
+}
+
+/*把价格标签下的所有子div高度设置为20*/
+.mall_product_price>div{
+	height:20px;
+	line-height:20px;
+	text-align: center;
+	
+}
+
+
+ 

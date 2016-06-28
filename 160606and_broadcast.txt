@@ -1,0 +1,57 @@
+2016/6/6
+广播是一种可以跨进程的通信方式.即可以在另一个应用中接收到发送的广播
+1.注册广播的方式
+(1)在AndroidMainfest.xml中静态注册.
+
+<receiver android:name=".MyBroadcastReceiver2">
+	<intent-filter>
+		 <action android:name="my_broadcast_intent"></action>
+	</intent-filter>
+</receiver>
+
+(2)在Activity中动态注册
+class MainActivity
+{
+	 protected void onCreate()
+	 {
+	 //意图过滤器
+	  intentFilter=new IntentFilter();
+	  intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+	  networkChangeReceiver=new NetworkChangeReceiver();
+	  //注册.或者在AndroidManifest中注册
+	  registerReceiver(networkChangeReceiver, intentFilter);
+	}
+
+	 protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(networkChangeReceiver);
+    }
+}
+
+对应的class NetworkChangeReceiver extends BroadcastReceiver{
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        Toast.makeText(context,"network 
+		  change",Toast.LENGTH_LONG).show();
+    }
+}
+
+2.接收广播的方式
+(1)使用IntentFilter
+然后registerReceiver(networkChangeReceiver, intentFilter);
+
+(2)在AndroidManifest.xml中先定义好要接收的广播类型
+<receiver android:name=".MyBroadcastReceiver2">
+	<intent-filter>
+		 <action android:name="my_broadcast_intent"></action>
+	</intent-filter>
+</receiver>
+
+然后通过intent发送对应的广播
+Intent intent=new Intent();
+intent.setAction("my_broadcast_intent");
+//发送广播
+sendBroadcast(intent);
+
+3.默认为全局广播(其他应用可接收).可设置为本地广播(本应用内)

@@ -1,0 +1,122 @@
+1.基本的网格结构
+(1)下面是 Bootstrap 网格的基本结构：
+<div class="container">
+   <div class="row">
+      <div class="col-*-*"></div>
+      <div class="col-*-*"></div>      
+   </div>
+   <div class="row">...</div>
+</div>
+<div class="container">....
+(2)现在 Bootstrap 在中型设备中，会查找带有 md 的类，并使用它们。
+在大型设备中，会查找带有 lg 的类，并使用它们。在本实例中，我们
+的 2 个 div 将从 50%/50% 分割转变为 33%/66%。请查看下面的实例进
+行验证。（在这里，为每个列分别定义了样式，您可以避免这么做。）
+<div class="col-md-6 col-lg-4">....</div>
+<div class="col-md-6 col-lg-8">....</div>
+手机.平板.台式
+<div class="col-sm-3 col-md-6 col-lg-4">....</div>
+<div class="col-sm-9 col-md-6 col-lg-8">....</div>
+
+(3)
+偏移列
+偏移是一个用于更专业的布局的有用功能。它们可用来给列腾出更多的
+空间。例如，.col-xs=* 类不支持偏移，但是它们可以简单地通过使用
+一个空的单元格来实现该效果。
+为了在大屏幕显示器上使用偏移，请使用 .col-md-offset-* 类。这些类
+会把一个列的左外边距（margin）增加 * 列，其中 * 范围是从 1 到 11
+。
+在下面的实例中，我们有 <div class="col-md-6">..</div>，我们将使
+用 .col-md-offset-3 class 来居中这个 div。
+
+ <div class="col-xs-6 col-md-offset-3" 
+ 在中型屏幕中.通过col-md-offset-3使得该行前面空三列
+
+(4)
+TestBoot
+--bootstrap
+  --css
+--index.html
+则在index.html中.因为在同一个目录
+<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+<pre></pre>显示代码
+
+2016/4/16
+0.<div class="container-fluid">全屏
+1.container类自带居中
+2.col-md-6:中
+col-lg-4:大
+col-sm-4:小
+col-xs-4:xs永远在一行.会重叠
+
+3.列偏移
+为了在大屏幕显示器上使用偏移，请使用 .col-md-offset-* 类。这些类会把一个列的左外边距（margin）增加 * 列，其中 * 范围是从 1 到 11
+
+在下面的实例中，我们有 <div class="col-md-6">..</div>，我们将使用 .col-md-offset-3 class 来居中这个 div。
+
+4.   ../bootstrap/css
+当前文件上一级目录下的bootstrap目录
+
+5.<small>本行内容是在标签内</small><br>
+<strong>本行内容是在标签内</strong><br>
+<em>本行内容是在标签内，并呈现为斜体</em><br>
+<p class="text-left">向左对齐文本</p>
+<p class="text-center">居中对齐文本</p>
+<p class="text-right">向右对齐文本</p>
+<p class="text-muted">本行内容是减弱的</p>
+<p class="text-primary">本行内容带有一个 primary class</p>
+<p class="text-success">本行内容带有一个 success class</p>
+<p class="text-info">本行内容带有一个 info class</p>
+<p class="text-warning">本行内容带有一个 warning class</p>
+<p class="text-danger">本行内容带有一个 danger class</p>
+
+2016/4/17
+下面的例子把表格单元边界与单元内容之间的间距设置为 10 像素
+1.<table border="8" cellpadding="10">
+
+
+下面的例子把表格单元格间距设置为 10 像素：
+<table border="8" cellspacing="10">
+
+innerHTML 属性设置或返回表格行的开始和结束标签之间的 HTML。
+语法
+tablerowObject.innerHTML=HTML
+
+表格列宽不够 还是调col-md-8吧
+
+<div class="input-group">
+<label for="heh" class="control-label">昵称</label>
+<input type="text" class="form-control" id="heh" name="nickName" onblur="checkNickname(this)" onfocus="enterNickname()" />
+<span class="input-group-addon"><span id="nicknamediv"> *请填写昵称</span></span>
+</div>
+
+2.导航栏
+<nav class="navbar navbar-inverse navbar-fixed-top " role="navigation">
+黑色 固定在顶部
+
+消除多行空格
+先要全选 再ctrl +[ 或shitf tab
+
+3.导航条里最后一定要放到<a>里.不然会不显示
+<div class="nav">
+  <div class="navbar-right">
+			    	<c:choose>
+							<c:when test="${not empty name }"><!-- 登陆后显示 -->
+			        			<ul class="nav navbar-nav">
+			            		<li><a href="#">当前用户：${name }<img src="BBS/../images/taobao.gif"/></a></li>
+									<li><a href="javascript:checkUserLogin()">个人中心</a></li>
+									<li><a href="javascript:checkPwd()">修改密码</a></li>
+									<li><a href="javascript:logout()">注销</a></li>
+								</ul>
+							</c:when>
+							<c:otherwise><!-- 没登陆时显示 -->
+								<ul class="nav navbar-nav">
+									<li><a href="user/login.jsp">登录</a></li>
+									<li><a href="user/regist.jsp">注册</a></li>
+									<li><a href="javascript:checkUserLogin()">个人中心</a></li>
+								</ul>
+							</c:otherwise>
+					</c:choose>
+			    </div>	
+</div>
