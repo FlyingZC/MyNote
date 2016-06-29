@@ -1,0 +1,68 @@
+2016/6/28
+1.传值
+typedef struct
+{
+	int data[MAXSIZE];
+	int length;
+}SqList;
+
+int getElem(SqList L,int i)
+{
+	if(L.length==0||i>L.length)
+		return ERROR;
+	int elem=L.data[i-1];
+	return	elem;
+}
+
+int main()
+{
+	SqList L;
+	int elem=getElem(L,n);
+}
+
+2.指针传值
+int getElem(SqList *L,int i)
+{
+	if(L->length==0||i>L->length)
+		return ERROR;
+	int elem=L->data[i-1];
+	return	elem;
+}
+int main()
+{
+	SqList L;
+	int elem=getElem(&L,n);
+}
+
+3.结构体
+(1)定义结构体类型struct stu
+struct student
+{
+	int age;
+	char name[10];
+}
+//定义两个struct student类型的变量
+struct student stu;
+struct student *pstu;
+//sStu类型即为struct student类型
+typedef struct student sStu;
+sStu stu;
+
+(2)定义结构体同时定义结构体变量
+struct student
+{
+	int age;
+	char name[10];
+}stu;
+相当于
+struct student stu;
+
+(3)typedef
+typedef struct
+{
+	int data[MAXSIZE];
+	int length;
+}SqList;
+以上结构体就是SqList类型
+
+(4)
