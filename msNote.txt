@@ -1,0 +1,68 @@
+2016/6/27
+1.mysql乱码
+D:\Program Files (x86)\MySQL\MySQL Server 5.5下
+my.ini
+default-character-set=utf8
+character-set-server=utf8
+
+[client]
+#password =1262 修改密码	
+
+# pipe
+# socket=mysql
+port=3306
+
+default-character-set=utf8
+[mysql]
+port=3306
+default-character-set=utf8
+里面默认文件位置改为安装目录
+
+执行所有命令之前先执行这一句登录
+
+mysql -uroot -p
+
+输入密码
+
+查询编码
+show variables like 'character%';
+
+show variables like '%collation%';
+
+以下设置只能一次有效
+
+set character_set_client = utf8;
+
+set character_set_server = utf8;
+
+set character_set_connection = utf8;
+
+set character_set_database = utf8;
+
+set character_set_results = utf8;
+
+set collation_connection = utf8_general_ci;
+
+set collation_database = utf8_general_ci;
+
+set collation_server = utf8_general_ci;
+
+<Connector connectionTimeout="20000" port="8080" protocol="HTTP/1.1" redirectPort="8443" URIEncoding="UTF-8"/>
+
+2.解决 2003 windows无法启动mysql服务 错误10061
+net stop mysql:停止mysql服务.如果在管理->服务中停止不了服务,可在任务管理器中停止该服务.或者该命令
+sc delete mysql:删除已存在的服务
+net stop mysql
+删除已有的服务，执行
+mysqld --install
+手工安装服务，然后执行
+net start mysql
+启动MySQL服务，如果服务启动成功，执行
+mysql -u root -p
+会提示你输入密码，输入你的密码，然后就能连接进数据库了，执行
+UPDATE mysql.user SET password=PASSWORD('新密码') WHERE user='root';
+FLUSH PRIVILEGES;
+修改root密码。
+
+ Access denied for user 'root'@'localhost'(using password'YES')
+
